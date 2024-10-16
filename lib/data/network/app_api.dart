@@ -12,7 +12,7 @@ abstract class AppServicesClient {
 
   @POST("/customers/login")
   Future<AuthentictionResponse> login(
-      @Field('email') String email ,
-      @Field('password') String password ,
-      );
+    @Field('email') String email,
+    @Field('password') String password,
+  );
 }
