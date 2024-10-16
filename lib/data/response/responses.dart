@@ -11,11 +11,6 @@ class BaseResponse {
   String? message;
 
   BaseResponse();
-
-  // // from json
-  // factory BaseResponse.fromJson(Map<String, dynamic> json) => _$BaseResponseFromJson(json);
-  // // to json
-  // Map<String, dynamic> toJson() => _$BaseResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -33,10 +28,11 @@ class CustomerResponse {
     this.numOfNotification,
   );
 
-  // from json
-  // factory CustomerResponse.fromJson(Map<String, dynamic> json) => _$CustomerResponseFromJson(json);
-  // // to json
-  // Map<String, dynamic> toJson() => _$CustomerResponseToJson(this);
+  //from json
+  factory CustomerResponse.fromJson(Map<String, dynamic> json) =>
+      _$CustomerResponseFromJson(json);
+  // to json
+  Map<String, dynamic> toJson() => _$CustomerResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -54,10 +50,11 @@ class ContactsResponse {
     this.phone,
   );
 
-  // from json
-  // factory ContactsResponse.fromJson(Map<String, dynamic> json) => _$ContactsResponseFromJson(json);
-  // // to json
-  // Map<String, dynamic> toJson() => _$ContactsResponseToJson(this);
+  // json
+  factory ContactsResponse.fromJson(Map<String, dynamic> json) =>
+      _$ContactsResponseFromJson(json);
+  // to json
+  Map<String, dynamic> toJson() => _$ContactsResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -72,9 +69,9 @@ class AuthentictionResponse extends BaseResponse {
     this.customer,
   );
 
-  // // from json
-  // factory AuthentictionResponse.fromJson(Map<String, dynamic> json) => _$AuthentictionResponseFromJson(json);
-  // // to json
-  // @override
-  // Map<String, dynamic> toJson() => _$AuthentictionResponseToJson(this);
+  // from json
+  factory AuthentictionResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthentictionResponseFromJson(json);
+  // to json
+  Map<String, dynamic> toJson() => _$AuthentictionResponseToJson(this);
 }
