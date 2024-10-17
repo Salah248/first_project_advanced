@@ -35,7 +35,7 @@ dependencies:
   rxdart: ^0.28.0
   retrofit: ^4.4.0
   analyzer: ^6.7.0
-  dio: any
+  dio: ^5.7.0
 
   flutter:
     sdk: flutter

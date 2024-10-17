@@ -1,4 +1,4 @@
-import 'package:first_project_advanced/domain/models.dart';
+import 'package:first_project_advanced/domain/models/models.dart';
 import 'package:first_project_advanced/pressentaion/onboarding/viewmodel/onboarding_view_model.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';

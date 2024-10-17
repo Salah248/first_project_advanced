@@ -1,7 +1,7 @@
 import 'package:first_project_advanced/app/constants.dart';
 import 'package:first_project_advanced/app/extensions.dart';
 import 'package:first_project_advanced/data/response/responses.dart';
-import 'package:first_project_advanced/domain/models.dart';
+import 'package:first_project_advanced/domain/models/models.dart';
 
 extension CustomerResponseMapper on CustomerResponse? {
   Customer toDomain() {
