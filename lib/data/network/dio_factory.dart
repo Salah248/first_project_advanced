@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names, no_leading_underscores_for_local_identifiers
+// ignore_for_file: constant_identifier_names
 
 import 'package:dio/dio.dart';
 import 'package:first_project_advanced/app/constants.dart';
@@ -15,20 +15,20 @@ class DioFactory {
   Future<Dio> getDio() async {
     Dio dio = Dio();
 
-    Duration _timeOut =
-        const Duration(milliseconds: 60 * 1000); // تحويل الوقت إلى Duration
+    Duration timeOut = const Duration(
+        milliseconds: Constants.apiTimeOut); // تحويل الوقت إلى Duration
 
     Map<String, String> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
-      AUTHORIZATION: 'send token here',
+      AUTHORIZATION: Constants.token,
       DEFAULT_LANGUAGE: 'en'
     };
     dio.options = BaseOptions(
       baseUrl: Constants.baseUrl,
       headers: headers,
-      receiveTimeout: _timeOut,
-      sendTimeout: _timeOut,
+      receiveTimeout: timeOut,
+      sendTimeout: timeOut,
     );
 
     if (!kReleaseMode) {
