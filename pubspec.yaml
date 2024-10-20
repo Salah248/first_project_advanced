@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  pretty_dio_logger: ^1.4.0
   internet_connection_checker: ^1.0.0+1
   dartz: ^0.10.1
   json_annotation: ^4.9.0
