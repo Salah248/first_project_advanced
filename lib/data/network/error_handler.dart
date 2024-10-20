@@ -184,3 +184,8 @@ class ResponseMessage {
   static const String NO_INTERNET_CONNECTION = AppStrings.noInternetError;
   static const String DEFAULT = AppStrings.defaultError;
 }
+
+class ApiInternalStatus {
+  static const int SUCCESS = 0;
+  static const int FAILURE = 1;
+}
