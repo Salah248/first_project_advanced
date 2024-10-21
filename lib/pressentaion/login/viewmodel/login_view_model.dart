@@ -11,7 +11,7 @@ class LoginViewModel extends BaseViewModel
   final StreamController _passwordStreamController =
       StreamController<String>.broadcast();
 
-  var loginObjects = LoginObject('', '');
+  var loginObject = LoginObject('', '');
 
   // inputs
 
@@ -35,11 +35,13 @@ class LoginViewModel extends BaseViewModel
   @override
   setPassword(String password) {
     inputPassword.add(password);
+    loginObject = loginObject.copyWith(password: password);
   }
 
   @override
   setUserName(String userName) {
     inputUserName.add(userName);
+    loginObject = loginObject.copyWith(userName: userName);
   }
 
   @override
