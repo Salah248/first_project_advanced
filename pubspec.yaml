@@ -28,6 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  freezed_annotation: ^2.4.4
+  freezed: ^2.5.7
   shared_preferences: ^2.3.2
   pretty_dio_logger: ^1.4.0
   internet_connection_checker: ^1.0.0+1
@@ -47,6 +49,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+ 
 
 
 dev_dependencies:

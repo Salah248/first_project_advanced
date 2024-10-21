@@ -8,7 +8,7 @@ class OnBoardingViewModel extends BaseViewModel
     with OnBoardingViewModelInputs, OnBoardingViewModelOutputs {
   // Stream controller outputs
   final StreamController<SliderViewObject> _streamController =
-      StreamController<SliderViewObject>();
+      StreamController<SliderViewObject>.broadcast();
   late final List<SliderObject> _list;
   int _currentIndex = 0;
 
