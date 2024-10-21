@@ -60,9 +60,11 @@ class LoginViewModel extends BaseViewModel
         .fold(
       (failure) => {
         // left => failure
+        print(failure.message)
       },
       (data) => {
         // raight => data (success)
+        print(data.customer?.name)
       },
     );
   }
