@@ -1,5 +1,5 @@
 import 'package:first_project_advanced/pressentaion/forgot_password/forgot_password_view.dart';
-import 'package:first_project_advanced/pressentaion/login/login_view.dart';
+import 'package:first_project_advanced/pressentaion/login/view/login_view.dart';
 import 'package:first_project_advanced/pressentaion/main/main_view.dart';
 import 'package:first_project_advanced/pressentaion/onboarding/view/onboarding_view.dart';
 import 'package:first_project_advanced/pressentaion/register/register_view.dart';
