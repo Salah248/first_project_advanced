@@ -1,6 +1,7 @@
 import 'package:first_project_advanced/pressentaion/login/viewmodel/login_view_model.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';
+import 'package:first_project_advanced/pressentaion/resources/routes_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/strings_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class LoginView extends StatefulWidget {
   State<LoginView> createState() => _LoginViewState();
 }
 
-LoginViewModel _viewModel = LoginViewModel(_loginUseCase);
+LoginViewModel _viewModel = LoginViewModel();
 
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _userNameController = TextEditingController();
@@ -37,14 +38,14 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Column();
+    return _getContentWidget();
   }
 
   Widget _getContentWidget() {
     return Scaffold(
+      backgroundColor: ColorManager.white,
       body: Container(
         padding: const EdgeInsets.only(top: AppPadding.p100),
-        color: ColorManager.white,
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -112,17 +113,55 @@ class _LoginViewState extends State<LoginView> {
                   child: StreamBuilder<bool>(
                     stream: _viewModel.outAreAllInputsValid,
                     builder: (context, snapshot) {
-                      return ElevatedButton(
-                        onPressed: (snapshot.data ?? false)
-                            ? () {
-                                _viewModel.login();
-                              }
-                            : null,
-                        child: const Text(AppStrings.login),
+                      return SizedBox(
+                        width: double.infinity,
+                        height: AppSize.s40,
+                        child: ElevatedButton(
+                          onPressed: (snapshot.data ?? false)
+                              ? () {
+                                  _viewModel.login();
+                                }
+                              : null,
+                          child: const Text(AppStrings.login),
+                        ),
                       );
                     },
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppPadding.p28,
+                    right: AppPadding.p28,
+                    top: AppPadding.p8,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, Routes.forgotPasswordRoute);
+                        },
+                        child: Text(
+                          AppStrings.forgetPassword,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, Routes.registerRoute);
+                        },
+                        child: Text(
+                          AppStrings.registerText,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

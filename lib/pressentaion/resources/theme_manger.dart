@@ -97,7 +97,9 @@ ThemeData getApplicationTheme() {
         color: ColorManager.grey,
         fontSize: FontSize.s14,
       ),
-      errorStyle: getRegularStyle(color: ColorManager.error),
+      errorStyle: getRegularStyle(
+        color: ColorManager.error,
+      ),
 
       // enabled border style
       enabledBorder: OutlineInputBorder(
