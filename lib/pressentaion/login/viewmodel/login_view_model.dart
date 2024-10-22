@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:first_project_advanced/domain/usecase/login_use_case.dart';
