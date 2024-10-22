@@ -14,6 +14,9 @@ class LoginViewModel extends BaseViewModel
   final StreamController _passwordStreamController =
       StreamController<String>.broadcast();
 
+  final StreamController _areAllInputsValidStreamController =
+      StreamController<void>.broadcast();
+
   final LoginUseCase _loginUseCase;
 
   LoginViewModel(this._loginUseCase);
@@ -29,6 +32,7 @@ class LoginViewModel extends BaseViewModel
   void dispose() {
     _userNamerStreamController.close();
     _passwordStreamController.close();
+    _areAllInputsValidStreamController.close();
   }
 
   @override
@@ -40,15 +44,21 @@ class LoginViewModel extends BaseViewModel
   Sink get inputUserName => _userNamerStreamController.sink;
 
   @override
+  //  implement inputAreAllInputsValid
+  Sink get inputAreAllInputsValid => _areAllInputsValidStreamController.sink;
+
+  @override
   setPassword(String password) {
     inputPassword.add(password);
     loginObject = loginObject.copyWith(password: password);
+    inputAreAllInputsValid.add(null); // to check
   }
 
   @override
   setUserName(String userName) {
     inputUserName.add(userName);
     loginObject = loginObject.copyWith(userName: userName);
+    inputAreAllInputsValid.add(null); // to check
   }
 
   @override
@@ -85,12 +95,24 @@ class LoginViewModel extends BaseViewModel
         (userName) => _isUserNameValid(userName),
       );
 
+  @override
+  //  implement outAreAllInputsValid
+  Stream<bool> get outAreAllInputsValid =>
+      _areAllInputsValidStreamController.stream.map(
+        (_) => _areAllInputsValid(),
+      );
+
   bool _isPasswordValid(String password) {
     return password.isNotEmpty;
   }
 
   bool _isUserNameValid(String userName) {
     return userName.isNotEmpty;
+  }
+
+  bool _areAllInputsValid() {
+    return _isPasswordValid(loginObject.password) &&
+        _isUserNameValid(loginObject.userName);
   }
 }
 
@@ -104,9 +126,12 @@ mixin LoginViewModelInputs {
   Sink get inputUserName;
 
   Sink get inputPassword;
+
+  Sink get inputAreAllInputsValid;
 }
 
 mixin LoginViewModelOutputs {
   Stream<bool> get outIsUserNameValid;
   Stream<bool> get outIsPasswordValid;
+  Stream<bool> get outAreAllInputsValid;
 }
