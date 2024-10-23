@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // First, initialize the app module which includes the Repository registration
+  await initAppModule();
+
+  // Then initialize the login module
   await initLoginModule();
+
   runApp(MyApp());
 }

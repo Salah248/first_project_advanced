@@ -64,11 +64,12 @@ Future<void> initAppModule() async {
 
 initLoginModule() {
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
-    instance.registerFactory<LoginUseCase>(
-      () => LoginUseCase(instance()),
-    );
     instance.registerFactory<LoginViewModel>(
       () => LoginViewModel(instance()),
+    );
+
+    instance.registerFactory<LoginUseCase>(
+      () => LoginUseCase(instance()),
     );
   }
 }

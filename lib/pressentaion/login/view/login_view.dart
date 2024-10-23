@@ -1,3 +1,4 @@
+import 'package:first_project_advanced/app/app_prefs.dart';
 import 'package:first_project_advanced/app/di.dart';
 import 'package:first_project_advanced/pressentaion/login/viewmodel/login_view_model.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
@@ -16,6 +17,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final LoginViewModel _viewModel = instance<LoginViewModel>();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   final TextEditingController _userNameController = TextEditingController();
 
@@ -67,6 +69,10 @@ class _LoginViewState extends State<LoginView> {
                     stream: _viewModel.outIsUserNameValid,
                     builder: (context, snapshot) {
                       return TextFormField(
+                        style: TextStyle(
+                          color: ColorManager.primary,
+                          fontSize: AppSize.s14,
+                        ),
                         keyboardType: TextInputType.emailAddress,
                         controller: _userNameController,
                         decoration: InputDecoration(
@@ -92,6 +98,10 @@ class _LoginViewState extends State<LoginView> {
                     stream: _viewModel.outIsPasswordValid,
                     builder: (context, snapshot) {
                       return TextFormField(
+                        style: TextStyle(
+                          color: ColorManager.primary,
+                          fontSize: AppSize.s14,
+                        ),
                         keyboardType: TextInputType.visiblePassword,
                         controller: _passwordController,
                         decoration: InputDecoration(
@@ -125,7 +135,12 @@ class _LoginViewState extends State<LoginView> {
                                   _viewModel.login();
                                 }
                               : null,
-                          child: const Text(AppStrings.login),
+                          child: Text(
+                            AppStrings.login,
+                            style: TextStyle(
+                              color: ColorManager.white,
+                            ),
+                          ),
                         ),
                       );
                     },
