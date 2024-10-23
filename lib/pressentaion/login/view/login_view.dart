@@ -1,3 +1,4 @@
+import 'package:first_project_advanced/app/di.dart';
 import 'package:first_project_advanced/pressentaion/login/viewmodel/login_view_model.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';
@@ -14,7 +15,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final LoginViewModel _viewModel = LoginViewModel();
+  final LoginViewModel _viewModel = instance<LoginViewModel>();
 
   final TextEditingController _userNameController = TextEditingController();
 
