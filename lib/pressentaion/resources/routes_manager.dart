@@ -1,3 +1,4 @@
+import 'package:first_project_advanced/app/di.dart';
 import 'package:first_project_advanced/pressentaion/forgot_password/forgot_password_view.dart';
 import 'package:first_project_advanced/pressentaion/login/view/login_view.dart';
 import 'package:first_project_advanced/pressentaion/main/main_view.dart';
@@ -24,6 +25,7 @@ class RouteGenerator {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => const SplachView());
       case Routes.loginRoute:
+        initLoginModule();
         return MaterialPageRoute(builder: (_) => const LoginView());
       case Routes.registerRoute:
         return MaterialPageRoute(builder: (_) => const RegisterView());
