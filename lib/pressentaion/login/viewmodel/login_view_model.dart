@@ -6,6 +6,7 @@ import 'package:first_project_advanced/domain/usecase/login_use_case.dart';
 import 'package:first_project_advanced/pressentaion/base/base_view_model.dart';
 import 'package:first_project_advanced/pressentaion/common/freezed_data_classes.dart';
 import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
+import 'package:first_project_advanced/pressentaion/common/state_renderer/state_renderer.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
@@ -68,6 +69,11 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login() async {
+    inputState.add(
+      LoadingState(
+        stateRendererType: StateRendererType.popupLoadingState,
+      ),
+    );
     (await _loginUseCase.execute(
       LoginUseCaseInput(
         loginObject.userName,
@@ -77,11 +83,22 @@ class LoginViewModel extends BaseViewModel
         .fold(
       (failure) => {
         // left => failure
+        inputState.add(
+          ErrorState(
+            StateRendererType.popupErrorState,
+            failure.message,
+          ),
+        ),
         print(failure.message)
       },
       (data) => {
         // raight => data (success)
         print(data.customer?.name)
+
+        // content
+        ,
+        inputState.add(ContentState())
+        // navigate to main screen
       },
     );
   }
