@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
    <uses-permission android:name="android.permission.INTERNET"/>
-    <application
-        android:label="first_project_advanced"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+<application
+    android:name=".MainApplication"
+    android:label="YourAppName"
+    android:icon="@mipmap/ic_launcher"
+    android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 abstract class FlowState {
   StateRendererType getStateRendererType();
   String getMessage();
+  bool isDialogShowing = false;
 }
 
 // loading state (POPUP , FULL SCREEN)
@@ -70,8 +71,7 @@ extension FlowStateExtension on FlowState {
     switch (runtimeType) {
       case const (LoadingState):
         {
-          if (getStateRendererType() ==
-              StateRendererType.fullScreenLoadingState) {
+          if (getStateRendererType() == StateRendererType.popupLoadingState) {
             // show popup loading
             showPopup(
               context,
@@ -92,19 +92,13 @@ extension FlowStateExtension on FlowState {
       case const (ErrorState):
         {
           dismissDialog(context);
-
           if (getStateRendererType() == StateRendererType.popupErrorState) {
             // show popup error
-            showPopup(
-              context,
-              getStateRendererType(),
-              getMessage(),
-            );
-
-            // show content ui of screen
+            showPopup(context, getStateRendererType(), getMessage());
+            // show content ui of the screen
             return contentScreenWidget;
           } else {
-            // full screen  error state
+            // full screen error state
             return StateRenderer(
                 message: getMessage(),
                 stateRendererType: getStateRendererType(),
@@ -141,20 +135,29 @@ extension FlowStateExtension on FlowState {
     }
   }
 
-  showPopup(
-    BuildContext context,
-    StateRendererType stateRendererType,
-    String message,
-  ) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => showDialog(
-        context: context,
-        builder: (BuildContext context) => StateRenderer(
-          stateRendererType: stateRendererType,
-          message: message,
-          retryActionFunction: () {},
-        ),
-      ),
-    );
+  void showPopup(BuildContext context, StateRendererType stateRendererType,
+      String message) {
+    if (!isDialogShowing) {
+      isDialogShowing = true;
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return StateRenderer(
+                stateRendererType: stateRendererType,
+                message: message,
+                retryActionFunction: () {},
+              );
+            },
+          ).then(
+            (_) {
+              // Reset the flag when the dialog is closed
+              isDialogShowing = false;
+            },
+          );
+        },
+      );
+    }
   }
 }
