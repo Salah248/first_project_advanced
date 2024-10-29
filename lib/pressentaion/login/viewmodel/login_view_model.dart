@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:first_project_advanced/domain/usecase/login_use_case.dart';
 import 'package:first_project_advanced/pressentaion/base/base_view_model.dart';
 import 'package:first_project_advanced/pressentaion/common/freezed_data_classes.dart';
+import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
@@ -26,10 +27,14 @@ class LoginViewModel extends BaseViewModel
   // inputs
 
   @override
-  void start() {}
+  void start() {
+    // view model should tell view please show content state
+    inputState.add(ContentState());
+  }
 
   @override
   void dispose() {
+    super.dispose();
     _userNamerStreamController.close();
     _passwordStreamController.close();
     _areAllInputsValidStreamController.close();
