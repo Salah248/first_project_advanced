@@ -1,5 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
+import 'package:first_project_advanced/app/app_prefs.dart';
+import 'package:first_project_advanced/app/di.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/routes_manager.dart';
@@ -14,6 +18,7 @@ class SplachView extends StatefulWidget {
 
 class _SplachViewState extends State<SplachView> {
   Timer? _timer;
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   _startDelay() {
     _timer = Timer(
@@ -22,11 +27,42 @@ class _SplachViewState extends State<SplachView> {
     );
   }
 
-  _goNext() {
-    Navigator.pushReplacementNamed(
-      context,
-      Routes.onBoardingRoute,
-    );
+  _goNext() async {
+    _appPreferences.isUserLoggedIn().then(
+          (isUserLoggedIn) => {
+            if (isUserLoggedIn)
+              {
+                // navigate to main screen
+                Navigator.pushReplacementNamed(
+                  context,
+                  Routes.mainRoute,
+                )
+              }
+            else
+              {
+                _appPreferences.isOnBoardingScreenViewd().then(
+                      (isOnBoardingScreenViewd) => {
+                        if (isOnBoardingScreenViewd)
+                          {
+                            // navigate to login  screen
+                            Navigator.pushReplacementNamed(
+                              context,
+                              Routes.loginRoute,
+                            )
+                          }
+                        else
+                          {
+                            // navigate to onboarding screen
+                            Navigator.pushReplacementNamed(
+                              context,
+                              Routes.onBoardingRoute,
+                            )
+                          }
+                      },
+                    )
+              }
+          },
+        );
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'package:first_project_advanced/app/app_prefs.dart';
+import 'package:first_project_advanced/app/di.dart';
 import 'package:first_project_advanced/domain/models/models.dart';
 import 'package:first_project_advanced/pressentaion/onboarding/viewmodel/onboarding_view_model.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
@@ -22,8 +24,10 @@ class OnBoardingView extends StatefulWidget {
 class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController _pageController = PageController();
   final OnBoardingViewModel _viewModel = OnBoardingViewModel();
+  final AppPreferences _appPreferences = instance<AppPreferences>();
 
   _bind() {
+    _appPreferences.setOnBoardingScreenViewd();
     _viewModel.start();
   }
 

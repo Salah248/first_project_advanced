@@ -41,6 +41,7 @@ class _LoginViewState extends State<LoginView> {
           // navigate to main screen
           SchedulerBinding.instance.addPostFrameCallback(
             (_) {
+              _appPreferences.setUserLoggedIn();
               Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
             },
           );
