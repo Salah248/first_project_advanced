@@ -8,6 +8,7 @@ import 'package:first_project_advanced/pressentaion/resources/routes_manager.dar
 import 'package:first_project_advanced/pressentaion/resources/strings_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -33,6 +34,18 @@ class _LoginViewState extends State<LoginView> {
     );
     _passwordController.addListener(
       () => _viewModel.setPassword(_passwordController.text),
+    );
+    _viewModel.isUserLoggedInSuccessfullyStreamController.stream.listen(
+      (isLoggedIn) {
+        if (isLoggedIn) {
+          // navigate to main screen
+          SchedulerBinding.instance.addPostFrameCallback(
+            (_) {
+              Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+            },
+          );
+        }
+      },
     );
   }
 
