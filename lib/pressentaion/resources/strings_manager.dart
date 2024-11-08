@@ -20,9 +20,9 @@ class AppStrings {
   static const loading = "loading";
   static const retryAgain = "retry again";
   static const ok = "ok";
-  static const String emailHint = 'email_hint';
-  static const String invalidEmail = "email_error";
-  static const String resetPassword = "reset_password";
+  static const String emailHint = 'Email';
+  static const String invalidEmail = "Email error";
+  static const String resetPassword = "reset password";
   static const String success = "success";
   static const String userNameInvalid = "username_hint_message";
   static const String mobileNumberInvalid = "mobile_number_hint_message";

@@ -28,41 +28,45 @@ class _SplachViewState extends State<SplachView> {
   }
 
   _goNext() async {
-    _appPreferences.isUserLoggedIn().then(
-          (isUserLoggedIn) => {
-            if (isUserLoggedIn)
-              {
-                // navigate to main screen
-                Navigator.pushReplacementNamed(
-                  context,
-                  Routes.mainRoute,
-                )
-              }
-            else
-              {
-                _appPreferences.isOnBoardingScreenViewd().then(
-                      (isOnBoardingScreenViewd) => {
-                        if (isOnBoardingScreenViewd)
-                          {
-                            // navigate to login  screen
-                            Navigator.pushReplacementNamed(
-                              context,
-                              Routes.loginRoute,
-                            )
-                          }
-                        else
-                          {
-                            // navigate to onboarding screen
-                            Navigator.pushReplacementNamed(
-                              context,
-                              Routes.onBoardingRoute,
-                            )
-                          }
-                      },
-                    )
-              }
-          },
-        );
+    Navigator.pushReplacementNamed(
+      context,
+      Routes.onBoardingRoute,
+    );
+    // _appPreferences.isUserLoggedIn().then(
+    //       (isUserLoggedIn) => {
+    //         if (isUserLoggedIn)
+    //           {
+    //             // navigate to main screen
+    //             Navigator.pushReplacementNamed(
+    //               context,
+    //               Routes.mainRoute,
+    //             )
+    //           }
+    //         else
+    //           {
+    //             _appPreferences.isOnBoardingScreenViewd().then(
+    //                   (isOnBoardingScreenViewd) => {
+    //                     if (isOnBoardingScreenViewd)
+    //                       {
+    //                         // navigate to login  screen
+    //                         Navigator.pushReplacementNamed(
+    //                           context,
+    //                           Routes.loginRoute,
+    //                         )
+    //                       }
+    //                     else
+    //                       {
+    //                         // navigate to onboarding screen
+    //                         Navigator.pushReplacementNamed(
+    //                           context,
+    //                           Routes.onBoardingRoute,
+    //                         )
+    //                       }
+    //                   },
+    //                 )
+    //           }
+    //       },
+    //     );
   }
 
   @override

@@ -6,7 +6,9 @@ import 'package:first_project_advanced/data/network/dio_factory.dart';
 import 'package:first_project_advanced/data/network/network_info.dart';
 import 'package:first_project_advanced/data/repository/repository_impl.dart';
 import 'package:first_project_advanced/domain/repository/repository.dart';
+import 'package:first_project_advanced/domain/usecase/forgot_password_use_case.dart';
 import 'package:first_project_advanced/domain/usecase/login_use_case.dart';
+import 'package:first_project_advanced/pressentaion/forgot_password/forgot_password_viewmodel.dart';
 import 'package:first_project_advanced/pressentaion/login/viewmodel/login_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -70,6 +72,21 @@ initLoginModule() {
 
     instance.registerFactory<LoginUseCase>(
       () => LoginUseCase(instance()),
+    );
+  }
+}
+
+initForgotPasswordModule() {
+  if (!GetIt.I.isRegistered<ForgotPasswordUseCase>()) {
+    instance.registerFactory<ForgotPasswordUseCase>(
+      () => ForgotPasswordUseCase(
+        instance(),
+      ),
+    );
+    instance.registerFactory<ForgotPasswordViewModel>(
+      () => ForgotPasswordViewModel(
+        instance(),
+      ),
     );
   }
 }
