@@ -71,6 +71,10 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   stream: _viewModel.outputIsEmailValid,
                   builder: (context, snapshot) {
                     return TextFormField(
+                      style: TextStyle(
+                        color: ColorManager.primary,
+                        fontSize: AppSize.s14,
+                      ),
                       keyboardType: TextInputType.emailAddress,
                       controller: _emailTextEditingController,
                       decoration: InputDecoration(
@@ -99,7 +103,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           onPressed: (snapshot.data ?? false)
                               ? () => _viewModel.forgotPassword()
                               : null,
-                          child: const Text(AppStrings.resetPassword)),
+                          child:  Text(AppStrings.resetPassword,style: TextStyle(
+                        color: ColorManager.white,
+                      ),),),
                     );
                   },
                 ),

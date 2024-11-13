@@ -39,6 +39,20 @@ class ErrorState extends FlowState {
   StateRendererType getStateRendererType() => stateRendererType;
 }
 
+// success state
+class SuccessState extends FlowState {
+  String message;
+  
+SuccessState(this.message);
+
+  @override
+  String getMessage() =>message;
+  
+  @override
+  StateRendererType getStateRendererType() => StateRendererType.popupSuccessState;
+}
+
+
 // content state
 class ContentState extends FlowState {
   ContentState();
@@ -105,6 +119,15 @@ extension FlowStateExtension on FlowState {
                 retryActionFunction: retryActionFunction);
           }
         }
+      case  const (SuccessState):
+        {
+          dismissDialog(context);
+            // show popup success
+            showPopup(context, getStateRendererType(), getMessage(),titel: AppStrings.success,);
+            // show content ui of the screen
+            return contentScreenWidget;
+            
+        }
       case const (EmptyState):
         {
           return StateRenderer(
@@ -136,7 +159,7 @@ extension FlowStateExtension on FlowState {
   }
 
   void showPopup(BuildContext context, StateRendererType stateRendererType,
-      String message) {
+      String message, { String titel =Constants.empty}) {
     if (!isDialogShowing) {
       isDialogShowing = true;
       WidgetsBinding.instance.addPostFrameCallback(
@@ -147,6 +170,7 @@ extension FlowStateExtension on FlowState {
               return StateRenderer(
                 stateRendererType: stateRendererType,
                 message: message,
+                titel: titel,
                 retryActionFunction: () {},
               );
             },

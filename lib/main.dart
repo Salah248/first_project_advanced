@@ -11,6 +11,7 @@ void main() async {
   // Then initialize the login module
   await initLoginModule();
 
+  // Then initialize the ForgotPasswordModule
   initForgotPasswordModule();
 
   runApp(MyApp());
