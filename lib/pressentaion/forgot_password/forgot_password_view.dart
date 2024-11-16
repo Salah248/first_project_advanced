@@ -37,6 +37,12 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManager.white,
+      appBar: AppBar(
+        elevation: AppSize.s0,
+        backgroundColor: ColorManager.white,
+        iconTheme: IconThemeData(color: ColorManager.primary),
+      ),
       body: StreamBuilder<FlowState>(
         stream: _viewModel.outputState,
         builder: (context, snapshot) {
@@ -100,12 +106,16 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                       width: double.infinity,
                       height: AppSize.s40,
                       child: ElevatedButton(
-                          onPressed: (snapshot.data ?? false)
-                              ? () => _viewModel.forgotPassword()
-                              : null,
-                          child:  Text(AppStrings.resetPassword,style: TextStyle(
-                        color: ColorManager.white,
-                      ),),),
+                        onPressed: (snapshot.data ?? false)
+                            ? () => _viewModel.forgotPassword()
+                            : null,
+                        child: Text(
+                          AppStrings.resetPassword,
+                          style: TextStyle(
+                            color: ColorManager.white,
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
