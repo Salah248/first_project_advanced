@@ -8,9 +8,12 @@ import 'package:first_project_advanced/data/repository/repository_impl.dart';
 import 'package:first_project_advanced/domain/repository/repository.dart';
 import 'package:first_project_advanced/domain/usecase/forgot_password_use_case.dart';
 import 'package:first_project_advanced/domain/usecase/login_use_case.dart';
+import 'package:first_project_advanced/domain/usecase/register_usecase.dart';
 import 'package:first_project_advanced/pressentaion/forgot_password/forgot_password_viewmodel.dart';
 import 'package:first_project_advanced/pressentaion/login/viewmodel/login_view_model.dart';
+import 'package:first_project_advanced/pressentaion/register/register_viewmodel.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,5 +91,22 @@ initForgotPasswordModule() {
         instance(),
       ),
     );
+  }
+}
+
+initRegisterModule() {
+  if (!GetIt.I.isRegistered<RegisterUsecase>()) {
+    instance.registerFactory<RegisterUsecase>(
+      () => RegisterUsecase(instance()),
+    );
+
+    instance.registerFactory<RegisterViewmodel>(
+      () => RegisterViewmodel(instance()),
+    );
+
+       instance.registerFactory<ImagePicker>(
+      () => ImagePicker(),
+    );
+
   }
 }
