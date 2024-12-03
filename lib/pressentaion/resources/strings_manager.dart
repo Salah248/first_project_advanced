@@ -33,7 +33,7 @@ class AppStrings {
   static const profilePicture = "Profile Picture";
   static const photoGallery = "Photo from galley";
   static const photoCamera = "Photo from camera";
-  static const home = "home";
+  static const home = "Home";
   static const notifications = "notification";
   static const search = "search";
   static const settings = "settings";

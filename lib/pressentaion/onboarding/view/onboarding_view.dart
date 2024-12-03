@@ -27,7 +27,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
   _bind() {
-    // _appPreferences.setOnBoardingScreenViewd();
+    _appPreferences.setOnBoardingScreenViewd();
     _viewModel.start();
   }
 
