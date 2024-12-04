@@ -29,4 +29,7 @@ Future<AuthentictionResponse> register(
   @Field("profile_picture") String profilePicture,
 );
 
+ @GET("/home")
+Future<HomeResponse> getHomeData();
+
 }
