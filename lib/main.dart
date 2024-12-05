@@ -8,11 +8,7 @@ void main() async {
   // First, initialize the app module which includes the Repository registration
   await initAppModule();
 
-  // Then initialize the login module
-  await initLoginModule();
 
-  // Then initialize the ForgotPasswordModule
-  initForgotPasswordModule();
 
   runApp(MyApp());
 }

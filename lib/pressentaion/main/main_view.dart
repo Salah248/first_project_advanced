@@ -1,7 +1,7 @@
-import 'package:first_project_advanced/pressentaion/main/pages/home_page.dart';
-import 'package:first_project_advanced/pressentaion/main/pages/notifcation_page.dart';
-import 'package:first_project_advanced/pressentaion/main/pages/search_page.dart';
-import 'package:first_project_advanced/pressentaion/main/pages/setting_page.dart';
+import 'package:first_project_advanced/pressentaion/main/pages/home/view/home_page.dart';
+import 'package:first_project_advanced/pressentaion/main/pages/notifcation/notifcation_page.dart';
+import 'package:first_project_advanced/pressentaion/main/pages/search/search_page.dart';
+import 'package:first_project_advanced/pressentaion/main/pages/setting/setting_page.dart';
 import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/strings_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/values_manager.dart';
