@@ -5,15 +5,15 @@ class SliderObject {
   String subTitle;
   String image;
 
-  SliderObject(this.title, this.image, this.subTitle);
+  SliderObject(this.title, this.subTitle, this.image);
 }
 
 class SliderViewObject {
-  SliderObject sliderOpject;
+  SliderObject sliderObject;
   int numOfSlides;
   int currentIndex;
 
-  SliderViewObject(this.sliderOpject, this.currentIndex, this.numOfSlides);
+  SliderViewObject(this.sliderObject, this.numOfSlides, this.currentIndex);
 }
 
 // login models
@@ -21,13 +21,9 @@ class SliderViewObject {
 class Customer {
   String id;
   String name;
-  int numOfNotification;
+  int numOfNotifications;
 
-  Customer(
-    this.id,
-    this.name,
-    this.numOfNotification,
-  );
+  Customer(this.id, this.name, this.numOfNotifications);
 }
 
 class Contacts {
@@ -35,38 +31,26 @@ class Contacts {
   String email;
   String link;
 
-  Contacts(
-    this.phone,
-    this.email,
-    this.link,
-  );
+  Contacts(this.phone, this.email, this.link);
 }
 
-class Authentiction {
+class Authentication {
   Customer? customer;
   Contacts? contacts;
 
-  Authentiction(
-    this.contacts,
-    this.customer,
-  );
+  Authentication(this.customer, this.contacts);
 }
 
-
 class Service {
-  String id ;
-  String title ;
-  String image ;
+  int id;
+  String title;
+  String image;
 
-  Service(
-   this.id ,
-   this.title,
-   this.image
-  );
+  Service(this.id, this.title, this.image);
 }
 
 class Store {
-  String id;
+  int id;
   String title;
   String image;
 
@@ -74,7 +58,7 @@ class Store {
 }
 
 class BannerAd {
-  String id;
+  int id;
   String title;
   String image;
   String link;
@@ -91,7 +75,7 @@ class HomeData {
 }
 
 class HomeObject {
-  HomeData data;
+  HomeData? data;
 
   HomeObject(this.data);
 }

@@ -25,7 +25,7 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final RegisterViewmodel _viewModel = instance<RegisterViewmodel>();
+  final RegisterViewModel _viewModel = instance<RegisterViewModel>();
   final ImagePicker _imagePicker = instance<ImagePicker>();
   final AppPreferences _appPreferences = instance<AppPreferences>();
 

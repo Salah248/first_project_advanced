@@ -15,7 +15,7 @@ class HomeViewModel extends BaseViewModel with HomeViewModelInput,HomeViewModelO
   final StreamController _storesStreamController =
       BehaviorSubject<List<Store>>();
 
-  final HomeUsecase _homeUsecase;
+  final HomeUseCase _homeUsecase;
 
   HomeViewModel(this._homeUsecase);
 
@@ -61,11 +61,11 @@ class HomeViewModel extends BaseViewModel with HomeViewModelInput,HomeViewModelO
         // content
         inputState.add(ContentState());
 
-        inputBanners.add(homeObject.data.banners);
+        inputBanners.add(homeObject.data?.banners);
 
-        inputServices.add(homeObject.data.services);
+        inputServices.add(homeObject.data?.services);
 
-        inputStores.add(homeObject.data.stores);
+        inputStores.add(homeObject.data?.stores);
 
       },
     );

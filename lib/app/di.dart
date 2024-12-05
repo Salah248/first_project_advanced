@@ -19,110 +19,71 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 final instance = GetIt.instance;
 
 Future<void> initAppModule() async {
-// app module , its a module where we put all generic dependencies
+  // app module, its a module where we put all generic dependencies
 
-// share prefs instance
+  // shared prefs instance
   final sharedPrefs = await SharedPreferences.getInstance();
 
-  instance.registerLazySingleton<SharedPreferences>(
-    () => sharedPrefs,
-  );
+  instance.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
 
   // app prefs instance
-  instance.registerLazySingleton<AppPreferences>(
-    () => AppPreferences(instance<SharedPreferences>()),
-  );
+  instance
+      .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
 
-  //network info instance
+  // network info
   instance.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(
-      InternetConnectionChecker(),
-    ),
-  );
+      () => NetworkInfoImpl(InternetConnectionChecker()));
 
-  // dio factory instance
-  instance.registerLazySingleton(
-    () => DioFactory(instance()),
-  );
+  // dio factory
+  instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));
 
   Dio dio = await instance<DioFactory>().getDio();
+  //app service client
+  instance.registerLazySingleton<AppServiceClient>(() => AppServiceClient(dio));
 
-  // app service clinet instance
-  instance.registerLazySingleton<AppServicesClient>(
-    () => AppServicesClient(dio),
-  );
-
-  // remote data source instance
+  // remote data source
   instance.registerLazySingleton<RemoteDataSource>(
-    () => RemoteDataSourseImpl(instance()),
-  );
+      () => RemoteDataSourceImpl(instance<AppServiceClient>()));
 
-// repository instance
+  // repository
+
   instance.registerLazySingleton<Repository>(
-    () => RepositoryImpl(
-      instance(),
-      instance(),
-    ),
-  );
+      () => RepositoryImpl(instance(), instance()));
 }
 
 initLoginModule() {
   if (!GetIt.I.isRegistered<LoginUseCase>()) {
-    instance.registerFactory<LoginViewModel>(
-      () => LoginViewModel(instance()),
-    );
-
-    instance.registerFactory<LoginUseCase>(
-      () => LoginUseCase(instance()),
-    );
+    instance.registerFactory<LoginUseCase>(() => LoginUseCase(instance()));
+    instance.registerFactory<LoginViewModel>(() => LoginViewModel(instance()));
   }
 }
 
 initForgotPasswordModule() {
   if (!GetIt.I.isRegistered<ForgotPasswordUseCase>()) {
     instance.registerFactory<ForgotPasswordUseCase>(
-      () => ForgotPasswordUseCase(
-        instance(),
-      ),
-    );
+        () => ForgotPasswordUseCase(instance()));
     instance.registerFactory<ForgotPasswordViewModel>(
-      () => ForgotPasswordViewModel(
-        instance(),
-      ),
-    );
+        () => ForgotPasswordViewModel(instance()));
   }
 }
 
 initRegisterModule() {
-  if (!GetIt.I.isRegistered<RegisterUsecase>()) {
-    instance.registerFactory<RegisterUsecase>(
-      () => RegisterUsecase(instance()),
-    );
-
-    instance.registerFactory<RegisterViewmodel>(
-      () => RegisterViewmodel(instance()),
-    );
-
-       instance.registerFactory<ImagePicker>(
-      () => ImagePicker(),
-    );
-
+  if (!GetIt.I.isRegistered<RegisterUseCase>()) {
+    instance
+        .registerFactory<RegisterUseCase>(() => RegisterUseCase(instance()));
+    instance.registerFactory<RegisterViewModel>(
+        () => RegisterViewModel(instance()));
+    instance.registerFactory<ImagePicker>(() => ImagePicker());
   }
 }
 
 initHomeModule() {
-  if (!GetIt.I.isRegistered<HomeUsecase>()) {
-    instance.registerFactory<HomeUsecase>(
-      () => HomeUsecase(instance()),
-    );
-
-    instance.registerFactory<HomeViewModel>(
-      () => HomeViewModel(instance()),
-    );
-
-
+  if (!GetIt.I.isRegistered<HomeUseCase>()) {
+    instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
+    instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
   }
 }

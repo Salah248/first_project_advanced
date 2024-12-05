@@ -1,34 +1,30 @@
-import 'package:first_project_advanced/app/constants.dart';
 import 'package:first_project_advanced/app/extensions.dart';
-import 'package:first_project_advanced/data/response/responses.dart';
 import 'package:first_project_advanced/domain/models/models.dart';
+
+import '../../app/constants.dart';
+import '../response/responses.dart';
 
 extension CustomerResponseMapper on CustomerResponse? {
   Customer toDomain() {
     return Customer(
-      this?.id.orEmpty() ?? Constants.empty,
-      this?.name.orEmpty() ?? Constants.empty,
-      this?.numOfNotification.orZero() ?? Constants.zero,
-    );
+        this?.id.orEmpty() ?? Constants.empty,
+        this?.name.orEmpty() ?? Constants.empty,
+        this?.numOfNotifications.orZero() ?? Constants.zero);
   }
 }
 
 extension ContactsResponseMapper on ContactsResponse? {
   Contacts toDomain() {
     return Contacts(
-      this?.phone.orEmpty() ?? Constants.empty,
-      this?.email.orEmpty() ?? Constants.empty,
-      this?.link.orEmpty() ?? Constants.empty,
-    );
+        this?.phone.orEmpty() ?? Constants.empty,
+        this?.email.orEmpty() ?? Constants.empty,
+        this?.link.orEmpty() ?? Constants.empty);
   }
 }
 
-extension AuthentictionResponseMapper on AuthentictionResponse? {
-  Authentiction toDomain() {
-    return Authentiction(
-      this?.contacts.toDomain(), // هنا تأكد أنك تمرر Contacts؟
-      this?.customer.toDomain(), // هنا تأكد أنك تمرر Customer؟
-    );
+extension AuthenticationResponseMapper on AuthenticationResponse? {
+  Authentication toDomain() {
+    return Authentication(this?.customer.toDomain(), this?.contacts.toDomain());
   }
 }
 
@@ -41,17 +37,16 @@ extension ForgotPasswordResponseMapper on ForgotPasswordResponse? {
 extension ServiceResponseMapper on ServiceResponse? {
   Service toDomain() {
     return Service(
-      this?.id.orEmpty() ?? Constants.empty,
-      this?.title.orEmpty() ?? Constants.empty,
-      this?.image.orEmpty() ?? Constants.empty,
-    );
+        this?.id.orZero() ?? Constants.zero,
+        this?.title.orEmpty() ?? Constants.empty,
+        this?.image.orEmpty() ?? Constants.empty);
   }
 }
 
 extension StoreResponseMapper on StoreResponse? {
   Store toDomain() {
     return Store(
-        this?.id.orEmpty() ??   Constants.empty,
+        this?.id.orZero() ?? Constants.zero,
         this?.title.orEmpty() ?? Constants.empty,
         this?.image.orEmpty() ?? Constants.empty);
   }
@@ -60,7 +55,7 @@ extension StoreResponseMapper on StoreResponse? {
 extension BannersResponseMapper on BannersResponse? {
   BannerAd toDomain() {
     return BannerAd(
-        this?.id.orEmpty() ??   Constants.empty,
+        this?.id.orZero() ?? Constants.zero,
         this?.title.orEmpty() ?? Constants.empty,
         this?.image.orEmpty() ?? Constants.empty,
         this?.link.orEmpty() ?? Constants.empty);

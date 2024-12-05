@@ -1,14 +1,14 @@
 import 'package:first_project_advanced/pressentaion/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 
-class NotifcationsPage extends StatefulWidget {
-  const NotifcationsPage({super.key});
+class NotificationsPage extends StatefulWidget {
+  const NotificationsPage({super.key});
 
   @override
-  State<NotifcationsPage> createState() => _NotifcationsPageState();
+  State<NotificationsPage> createState() => _NotificationsPageState();
 }
 
-class _NotifcationsPageState extends State<NotifcationsPage> {
+class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return const Center(

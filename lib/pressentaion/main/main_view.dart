@@ -18,15 +18,14 @@ class _MainViewState extends State<MainView> {
   List<Widget> pages = const [
     HomePage(),
     SearchPage(),
-    NotifcationsPage(),
-    SettingsPage(),
+    NotificationsPage(),
+    SettingsPage()
   ];
-  List<String> titels = const [
-   AppStrings.home,
-   AppStrings.search,
-   AppStrings.notifications,
-   AppStrings.settings,
-
+  List<String> titles = [
+    AppStrings.home,
+    AppStrings.search,
+    AppStrings.notifications,
+    AppStrings.settings,
   ];
 
   var _title = AppStrings.home;
@@ -36,18 +35,12 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _title,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
+        title: Text(_title, style: Theme.of(context).textTheme.titleSmall),
       ),
       body: pages[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: ColorManager.lightGrey,
-            spreadRadius: AppSize.s1,
-          )
+          BoxShadow(color: ColorManager.lightGrey, spreadRadius: AppSize.s1)
         ]),
         child: BottomNavigationBar(
           selectedItemColor: ColorManager.primary,
@@ -56,8 +49,7 @@ class _MainViewState extends State<MainView> {
           onTap: onTap,
           items: const [
             BottomNavigationBarItem(
-
-                icon: Icon(Icons.home_outlined,), label: AppStrings.home ),
+                icon: Icon(Icons.home_outlined), label: AppStrings.home),
             BottomNavigationBarItem(
                 icon: Icon(Icons.search), label: AppStrings.search),
             BottomNavigationBarItem(
@@ -74,7 +66,7 @@ class _MainViewState extends State<MainView> {
   onTap(int index) {
     setState(() {
       _currentIndex =index ;
-      _title = titels[index];
+      _title = titles[index];
     });
   }
 }

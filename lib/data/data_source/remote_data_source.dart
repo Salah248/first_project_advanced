@@ -1,47 +1,48 @@
+
 import 'package:first_project_advanced/data/network/app_api.dart';
 import 'package:first_project_advanced/data/network/requests.dart';
 import 'package:first_project_advanced/data/response/responses.dart';
 
 abstract class RemoteDataSource {
-  Future<AuthentictionResponse> login(LoginRequest loginRequest);
-  Future<AuthentictionResponse> register(RegisterRequest registerRequest);
+  Future<AuthenticationResponse> login(LoginRequest loginRequest);
+
+  Future<AuthenticationResponse> register(RegisterRequest registerRequest);
+
   Future<ForgotPasswordResponse> forgotPassword(String email);
+
   Future<HomeResponse> getHomeData();
 }
 
-class RemoteDataSourseImpl implements RemoteDataSource {
-  final AppServicesClient _appServicesClient;
+class RemoteDataSourceImpl implements RemoteDataSource {
+  final AppServiceClient _appServiceClient;
 
-  RemoteDataSourseImpl(this._appServicesClient);
+  RemoteDataSourceImpl(this._appServiceClient);
 
   @override
-  Future<AuthentictionResponse> login(LoginRequest loginRequest) async {
-    return await _appServicesClient.login(
-      loginRequest.email,
-      loginRequest.password,
-    );
+  Future<AuthenticationResponse> login(LoginRequest loginRequest) async {
+    return await _appServiceClient.login(
+        loginRequest.email, loginRequest.password);
   }
 
   @override
   Future<ForgotPasswordResponse> forgotPassword(String email) async {
-    return await _appServicesClient.forgotPassword(email);
+    return await _appServiceClient.forgotPassword(email);
   }
 
   @override
-  Future<AuthentictionResponse> register(
+  Future<AuthenticationResponse> register(
       RegisterRequest registerRequest) async {
-    return await _appServicesClient.register(
-      registerRequest.username,
-      registerRequest.countryMobileCode,
-      registerRequest.mobileNumber,
-      registerRequest.email,
-      registerRequest.password,
-     "",
-    );
+    return await _appServiceClient.register(
+        registerRequest.userName,
+        registerRequest.countryMobileCode,
+        registerRequest.mobileNumber,
+        registerRequest.email,
+        registerRequest.password,
+        "");
   }
-  
+
   @override
   Future<HomeResponse> getHomeData() async {
-  return await _appServicesClient.getHomeData();
+    return await _appServiceClient.getHomeData();
   }
 }
