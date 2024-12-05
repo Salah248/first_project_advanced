@@ -37,8 +37,8 @@ class AppStrings {
   static const notifications = "notification";
   static const search = "search";
   static const settings = "settings";
-  static const services = "services";
-  static const stores = "stores";
+  static const services = "Services";
+  static const stores = "Stores";
   static const String details = "details";
   static const String about = "about";
   static const String storeDetails = "store_details";
