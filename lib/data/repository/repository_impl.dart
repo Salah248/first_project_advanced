@@ -117,7 +117,7 @@ class RepositoryImpl implements Repository {
           // failure --return business error
           // return either left
           return Left(Failure(ApiInternalStatus.FAILURE,
-              response.message ?? ResponseMessage.DEFAULT));
+              response.message ?? ResponseMessage.DEFAULT,),);
         }
       } catch (error) {
         return Left(ErrorHandler.handle(error).failure);
