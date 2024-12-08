@@ -3,16 +3,18 @@ import 'package:dartz/dartz.dart';
 import 'package:first_project_advanced/data/network/failure.dart';
 import 'package:first_project_advanced/data/network/requests.dart';
 import 'package:first_project_advanced/domain/models/models.dart';
-import 'package:first_project_advanced/domain/repository/repository.dart';
 import 'package:first_project_advanced/domain/usecase/base_use_case.dart';
 
-class RegisterUsecase implements BaseUseCase<RegisterUseCaseInput, Authentiction> {
+import '../repository/repository.dart';
+
+class RegisterUseCase
+    implements BaseUseCase<RegisterUseCaseInput, Authentication> {
   final Repository _repository;
 
-  RegisterUsecase(this._repository);
+  RegisterUseCase(this._repository);
 
- @override
-  Future<Either<Failure, Authentiction>> execute(
+  @override
+  Future<Either<Failure, Authentication>> execute(
       RegisterUseCaseInput input) async {
     return await _repository.register(RegisterRequest(
         input.userName,
@@ -33,5 +35,5 @@ class RegisterUseCaseInput {
   String profilePicture;
 
   RegisterUseCaseInput(this.userName, this.countryMobileCode, this.mobileNumber,
-      this.email, this.password, this.profilePicture,);
+      this.email, this.password, this.profilePicture);
 }

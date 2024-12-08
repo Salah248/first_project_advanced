@@ -1,4 +1,3 @@
-// ignore_for_file: constant_identifier_names
 
 import 'package:dio/dio.dart';
 import 'package:first_project_advanced/app/app_prefs.dart';
@@ -20,33 +19,27 @@ class DioFactory {
   Future<Dio> getDio() async {
     Dio dio = Dio();
 
-    Duration timeOut = const Duration(
-        milliseconds: Constants.apiTimeOut); // تحويل الوقت إلى Duration
-
     String language = await _appPreferences.getAppLanguage();
-
     Map<String, String> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
       AUTHORIZATION: Constants.token,
       DEFAULT_LANGUAGE: language
     };
+
     dio.options = BaseOptions(
-      baseUrl: Constants.baseUrl,
-      headers: headers,
-      receiveTimeout: timeOut,
-      sendTimeout: timeOut,
-    );
+        baseUrl: Constants.baseUrl,
+        headers: headers,
+        receiveTimeout: const Duration(milliseconds: Constants.apiTimeOut),
+        sendTimeout:const Duration(milliseconds: Constants.apiTimeOut));
 
     if (!kReleaseMode) {
-      // its depug mode so print app logs
-      dio.interceptors.add(
-        PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: true,
-        ),
-      );
+      // its debug mode so print app logs
+      dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+      ));
     }
 
     return dio;

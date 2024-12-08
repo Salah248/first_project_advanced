@@ -1,3 +1,4 @@
+
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/font_manager.dart';
@@ -8,33 +9,29 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 enum StateRendererType {
-  // popup stetes (dialog)
+  // POPUP STATES (DIALOG)
   popupLoadingState,
   popupErrorState,
-  popupSuccessState,
-
-  // full screen stated (full screen)
+  popupSuccess,
+  // FULL SCREEN STATED (FULL SCREEN)
   fullScreenLoadingState,
   fullScreenErrorState,
   fullScreenEmptyState,
-
-  // genral
-  contentState,
+  // general
+  contentState
 }
 
 class StateRenderer extends StatelessWidget {
-  const StateRenderer(
-      {super.key,
-      required this.stateRendererType,
-      this.message = AppStrings.loading,
-      this.titel = '',
-      
-      required this.retryActionFunction});
-
   final StateRendererType stateRendererType;
   final String message;
-  final String titel;
+  final String title;
   final Function retryActionFunction;
+
+  const StateRenderer(
+      {super.key, required this.stateRendererType,
+      this.message = AppStrings.loading,
+      this.title = "",
+      required this.retryActionFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -44,54 +41,44 @@ class StateRenderer extends StatelessWidget {
   Widget _getStateWidget(BuildContext context) {
     switch (stateRendererType) {
       case StateRendererType.popupLoadingState:
-        return __getPopUpDialog(context, [
-          _getAnimatedImage(JsonAssets.loading),
-        ]);
-
+        return _getPopUpDialog(
+            context, [_getAnimatedImage(JsonAssets.loading)]);
       case StateRendererType.popupErrorState:
-        return __getPopUpDialog(context, [
+        return _getPopUpDialog(context, [
           _getAnimatedImage(JsonAssets.error),
           _getMessage(message),
-          _getRetryButton(AppStrings.ok, context),
-        ]);
-      case StateRendererType.popupSuccessState:
-        return __getPopUpDialog(context, [
-          _getAnimatedImage(JsonAssets.success),
-          _getMessage(titel),
-          _getMessage(message),
-          _getRetryButton(AppStrings.ok, context),
+          _getRetryButton(AppStrings.ok, context)
         ]);
       case StateRendererType.fullScreenLoadingState:
-        return _getItemsColumn([
-          _getAnimatedImage(JsonAssets.loading),
-          _getMessage(message),
-          _getRetryButton(AppStrings.retryAgain, context),
-        ]);
-
+        return _getItemsColumn(
+            [_getAnimatedImage(JsonAssets.loading), _getMessage(message)]);
       case StateRendererType.fullScreenErrorState:
         return _getItemsColumn([
           _getAnimatedImage(JsonAssets.error),
           _getMessage(message),
+          _getRetryButton(AppStrings.retryAgain, context)
         ]);
       case StateRendererType.fullScreenEmptyState:
-        return _getItemsColumn([
-          _getAnimatedImage(JsonAssets.empty),
-          _getMessage(message),
-        ]);
-
+        return _getItemsColumn(
+            [_getAnimatedImage(JsonAssets.empty), _getMessage(message)]);
       case StateRendererType.contentState:
         return Container();
-
+      case StateRendererType.popupSuccess:
+        return _getPopUpDialog(context, [
+          _getAnimatedImage(JsonAssets.success),
+          _getMessage(title),
+          _getMessage(message),
+          _getRetryButton(AppStrings.ok, context)
+        ]);
       default:
         return Container();
     }
   }
 
-  Widget __getPopUpDialog(BuildContext context, List<Widget> children) {
+  Widget _getPopUpDialog(BuildContext context, List<Widget> children) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppSize.s14),
-      ),
+          borderRadius: BorderRadius.circular(AppSize.s14)),
       elevation: AppSize.s1_5,
       backgroundColor: Colors.transparent,
       child: Container(
@@ -124,10 +111,9 @@ class StateRenderer extends StatelessWidget {
 
   Widget _getAnimatedImage(String animationName) {
     return SizedBox(
-      height: AppSize.s100,
-      width: AppSize.s100,
-      child: Lottie.asset(animationName),
-    );
+        height: AppSize.s100,
+        width: AppSize.s100,
+        child: Lottie.asset(animationName));
   }
 
   Widget _getMessage(String message) {
@@ -137,9 +123,8 @@ class StateRenderer extends StatelessWidget {
         child: Text(
           message,
           style: getRegularStyle(
-            color: ColorManager.black,
-            fontSize: FontSize.s18,
-          ),
+              color: ColorManager.black, fontSize: FontSize.s18),
+          textAlign: TextAlign.center,
         ),
       ),
     );
@@ -150,20 +135,19 @@ class StateRenderer extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.p18),
         child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              if (stateRendererType == StateRendererType.fullScreenErrorState) {
-                // call retry function
-                retryActionFunction.call();
-              } else {
-                // popup error state
-                Navigator.of(context).pop();
-              }
-            },
-            child: Text(buttonTitle),
-          ),
-        ),
+            width: double.infinity,
+            child: ElevatedButton(
+                onPressed: () {
+                  if (stateRendererType ==
+                      StateRendererType.fullScreenErrorState) {
+                    // call retry function
+                    retryActionFunction.call();
+                  } else {
+                    // popup error state
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text(buttonTitle))),
       ),
     );
   }

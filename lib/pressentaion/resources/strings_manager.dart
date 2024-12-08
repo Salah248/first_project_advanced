@@ -18,7 +18,7 @@ class AppStrings {
   static const forgetPassword = "Forgot Password?";
   static const registerText = "Register";
   static const loading = "loading";
-  static const retryAgain = "retry again";
+  static const retryAgain = "Retry again";
   static const ok = "ok";
   static const String emailHint = 'Email';
   static const String invalidEmail = "Email error";
@@ -33,12 +33,12 @@ class AppStrings {
   static const profilePicture = "Profile Picture";
   static const photoGallery = "Photo from galley";
   static const photoCamera = "Photo from camera";
-  static const home = "home";
+  static const home = "Home";
   static const notifications = "notification";
   static const search = "search";
   static const settings = "settings";
-  static const services = "services";
-  static const stores = "stores";
+  static const services = "Services";
+  static const stores = "Stores";
   static const String details = "details";
   static const String about = "about";
   static const String storeDetails = "store_details";
@@ -57,7 +57,7 @@ class AppStrings {
   static const String internalServerError = "internal_server_error";
   static const String unknownError = "unknown_error";
   static const String timeoutError = "timeout_error";
-  static const String defaultError = "default_error";
+  static const String defaultError = "Some thing went wrong, Try again later";
   static const String cacheError = "cache_error";
   static const String noInternetError = "no_internet_error";
 }

@@ -11,7 +11,7 @@ import 'package:first_project_advanced/pressentaion/common/state_renderer/state_
 import 'package:first_project_advanced/pressentaion/common/state_renderer/state_renderer.dart';
 import 'package:first_project_advanced/pressentaion/resources/strings_manager.dart';
 
-class RegisterViewmodel extends BaseViewModel
+class RegisterViewModel extends BaseViewModel
     with RegisterViewModelInput, RegisterViewModelIOutput {
   final StreamController userNamerStreamController =
       StreamController<String>.broadcast();
@@ -30,9 +30,9 @@ class RegisterViewmodel extends BaseViewModel
       final StreamController isUserRegisterSuccessfullyStreamController =
       StreamController<bool>();
 
-  final RegisterUsecase _registerUsecase;
+  final RegisterUseCase _registerUsecase;
 
-  RegisterViewmodel(this._registerUsecase);
+  RegisterViewModel(this._registerUsecase);
 
   var registerObject = RegisterObject('', '', '', '', '', '');
 

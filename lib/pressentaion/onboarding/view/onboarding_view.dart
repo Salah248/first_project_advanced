@@ -27,7 +27,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
   _bind() {
-    // _appPreferences.setOnBoardingScreenViewd();
+    _appPreferences.setOnBoardingScreenViewd();
     _viewModel.start();
   }
 
@@ -67,7 +67,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               _viewModel.onPageChanged(index);
             },
             itemBuilder: (context, index) {
-              return OnBoardingPage(sliderViewObject.sliderOpject);
+              return OnBoardingPage(sliderViewObject.sliderObject);
             }),
         bottomSheet: Container(
           color: ColorManager.white,
