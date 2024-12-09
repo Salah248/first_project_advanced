@@ -1,3 +1,5 @@
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/pressentaion/main/pages/home/view/home_page.dart';
 import 'package:first_project_advanced/pressentaion/main/pages/notifcation/notifcation_page.dart';
 import 'package:first_project_advanced/pressentaion/main/pages/search/search_page.dart';
@@ -11,24 +13,24 @@ class MainView extends StatefulWidget {
   const MainView({super.key});
 
   @override
-  State<MainView> createState() => _MainViewState();
+  MainViewState createState() => MainViewState();
 }
 
-class _MainViewState extends State<MainView> {
-  List<Widget> pages = const [
-    HomePage(),
-    SearchPage(),
-    NotificationsPage(),
-    SettingsPage()
+class MainViewState extends State<MainView> {
+  List<Widget> pages = [
+    const HomePage(),
+    const SearchPage(),
+    const NotificationsPage(),
+    const SettingsPage()
   ];
   List<String> titles = [
-    AppStrings.home,
-    AppStrings.search,
-    AppStrings.notifications,
-    AppStrings.settings,
+    AppStrings.home.tr(),
+    AppStrings.search.tr(),
+    AppStrings.notifications.tr(),
+    AppStrings.settings.tr(),
   ];
 
-  var _title = AppStrings.home;
+  var _title = AppStrings.home.tr();
   var _currentIndex = 0;
 
   @override
@@ -47,16 +49,16 @@ class _MainViewState extends State<MainView> {
           unselectedItemColor: ColorManager.grey,
           currentIndex: _currentIndex,
           onTap: onTap,
-          items: const [
+          items:   [
             BottomNavigationBarItem(
-                icon: Icon(Icons.home_outlined), label: AppStrings.home),
+                icon: const Icon(Icons.home_outlined), label: AppStrings.home.tr()),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search), label: AppStrings.search),
+                icon: const Icon(Icons.search), label: AppStrings.search.tr()),
             BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: AppStrings.notifications),
+                icon: const Icon(Icons.notifications),
+                label: AppStrings.notifications.tr()),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: AppStrings.settings),
+                icon: const Icon(Icons.settings), label: AppStrings.settings.tr()),
           ],
         ),
       ),
@@ -65,7 +67,7 @@ class _MainViewState extends State<MainView> {
 
   onTap(int index) {
     setState(() {
-      _currentIndex =index ;
+      _currentIndex = index;
       _title = titles[index];
     });
   }

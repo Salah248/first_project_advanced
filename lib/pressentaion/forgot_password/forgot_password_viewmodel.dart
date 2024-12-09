@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:first_project_advanced/app/functions.dart';
 import 'package:first_project_advanced/domain/usecase/forgot_password_use_case.dart';
 import 'package:first_project_advanced/pressentaion/base/base_view_model.dart';
 import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
-import 'package:first_project_advanced/pressentaion/common/state_renderer/state_renderer.dart';
+import '../../app/functions.dart';
+import '../common/state_renderer/state_renderer.dart';
 
 class ForgotPasswordViewModel extends BaseViewModel
     with ForgotPasswordViewModelInput, ForgotPasswordViewModelOutput {
   final StreamController _emailStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
   final StreamController _isAllInputValidStreamController =
-      StreamController<void>.broadcast();
+  StreamController<void>.broadcast();
 
   final ForgotPasswordUseCase _forgotPasswordUseCase;
 
@@ -30,8 +30,8 @@ class ForgotPasswordViewModel extends BaseViewModel
     inputState.add(
         LoadingState(stateRendererType: StateRendererType.popupLoadingState));
     (await _forgotPasswordUseCase.execute(email)).fold((failure) {
-      inputState
-          .add(ErrorState(StateRendererType.popupErrorState, failure.message));
+      inputState.add(
+          ErrorState(StateRendererType.popupErrorState, failure.message));
     }, (supportMessage) {
       inputState.add(SuccessState(supportMessage));
     });

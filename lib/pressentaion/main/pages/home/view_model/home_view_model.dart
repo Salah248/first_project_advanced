@@ -1,113 +1,78 @@
+// ignore_for_file: void_checks
+
 import 'dart:async';
 import 'dart:ffi';
-import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
-import 'package:first_project_advanced/pressentaion/common/state_renderer/state_renderer.dart';
-import 'package:rxdart/rxdart.dart';
+
 import 'package:first_project_advanced/domain/models/models.dart';
 import 'package:first_project_advanced/domain/usecase/home_usecase.dart';
 import 'package:first_project_advanced/pressentaion/base/base_view_model.dart';
+import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
+import 'package:rxdart/rxdart.dart';
 
-class HomeViewModel extends BaseViewModel with HomeViewModelInput,HomeViewModelOutput   {
-   final StreamController _bannersStreamController = BehaviorSubject<List<BannerAd>>();
-     
-  final StreamController _servicesStreamController =
-      BehaviorSubject<List<Service>>();
-  final StreamController _storesStreamController =
-      BehaviorSubject<List<Store>>();
+import '../../../../common/state_renderer/state_renderer.dart';
 
-  final HomeUseCase _homeUsecase;
+class HomeViewModel extends BaseViewModel
+    with HomeViewModelInput, HomeViewModelOutput {
+  final _dataStreamController = BehaviorSubject<HomeViewObject>();
 
-  HomeViewModel(this._homeUsecase);
+  final HomeUseCase _homeUseCase;
 
+  HomeViewModel(this._homeUseCase);
 
- // -- inputs
-
+  // --  inputs
   @override
   void start() {
     _getHomeData();
   }
 
+  _getHomeData() async {
+    inputState.add(
+      LoadingState(stateRendererType: StateRendererType.fullScreenLoadingState),
+    );
+    (await _homeUseCase.execute(Void)).fold(
+        (failure) => {
+              // left -> failure
+              inputState.add(
+                ErrorState(
+                    StateRendererType.fullScreenErrorState, failure.message),
+              )
+            }, (homeObject) {
+      // right -> data (success)
+      // content
+      inputState.add(ContentState());
+      inputHomeData.add(HomeViewObject(homeObject.data.stores,
+          homeObject.data.services, homeObject.data.banners));
+      // navigate to main screen
+    });
+  }
+
   @override
   void dispose() {
-    _bannersStreamController.close();
-    _servicesStreamController.close();
-    _storesStreamController.close();
+    _dataStreamController.close();
     super.dispose();
   }
 
-  _getHomeData() async {
-    inputState.add(
-      LoadingState(
-        stateRendererType: StateRendererType.fullScreenLoadingState,
-      ),
-    );
-    (await _homeUsecase.execute(Void))
-        .fold(
-      (failure) => {
-        // left => failure
-        inputState.add(
-          ErrorState(
-            StateRendererType.fullScreenErrorState,
-            failure.message,
-          ),
-        ),
-        print(failure.message)
-      },
-      (homeObject) {
-        // raight => data (success)
-
-
-
-        // content
-        inputState.add(ContentState());
-
-        inputBanners.add(homeObject.data?.banners);
-
-        inputServices.add(homeObject.data?.services);
-
-        inputStores.add(homeObject.data?.stores);
-
-      },
-    );
-  }
-  
-
   @override
-  Sink get inputBanners => _bannersStreamController.sink;
-  
-  @override
-  Sink get inputServices => _servicesStreamController.sink;
-  
-  @override
-  Sink get inputStores => _storesStreamController.sink;
-  
-  // --- outputs
+  Sink get inputHomeData => _dataStreamController.sink;
 
+  // -- outputs
   @override
-  Stream<List<BannerAd>> get outputBanners => _bannersStreamController.stream.map((banners) => banners,);
-  
-  @override
-  Stream<List<Service>> get outputServices => _servicesStreamController.stream.map((services) =>services ,);
-  
-  @override
-  Stream<List<Store>> get outputStores => _storesStreamController.stream.map((stores) => stores ,);
+  Stream<HomeViewObject> get outputHomeData =>
+      _dataStreamController.stream.map((data) => data);
 }
 
-
-mixin HomeViewModelInput{
-Sink get inputStores;
-Sink get inputServices;
-Sink get inputBanners;
-
+mixin HomeViewModelInput {
+  Sink get inputHomeData;
 }
 
+mixin HomeViewModelOutput {
+  Stream<HomeViewObject> get outputHomeData;
+}
 
-mixin HomeViewModelOutput{
-  
-  Stream<List<Store>> get outputStores;
+class HomeViewObject {
+  List<Store> stores;
+  List<Service> services;
+  List<BannerAd> banners;
 
-  Stream<List<Service>> get outputServices;
-
-  Stream<List<BannerAd>> get outputBanners;
-
+  HomeViewObject(this.stores, this.services, this.banners);
 }

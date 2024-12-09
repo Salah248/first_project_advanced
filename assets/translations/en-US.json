@@ -14,7 +14,7 @@
   "password_hint": "Password",
   "login_button": "Login",
   "forgot_password_text": "Forgot Password",
-  "register_text": "Not a member ? Sign up",
+  "register_text": "register",
   "loading": "Loading....",
   "retry_again": "Retry again",
   "error_occurred": "An Error Occurred",
