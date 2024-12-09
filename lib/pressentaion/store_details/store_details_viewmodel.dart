@@ -1,3 +1,6 @@
+
+// ignore_for_file: void_checks
+
 import 'dart:async';
 import 'dart:ffi';
 
@@ -10,7 +13,6 @@ import 'package:rxdart/rxdart.dart';
 
 class StoreDetailsViewModel extends BaseViewModel
     with StoreDetailsViewModelInput, StoreDetailsViewModelOutput {
-  // StreamController
   final _storeDetailsStreamController = BehaviorSubject<StoreDetails>();
 
   final StoreDetailsUseCase storeDetailsUseCase;
@@ -23,45 +25,32 @@ class StoreDetailsViewModel extends BaseViewModel
   }
 
   _loadData() async {
-    // عرض حالة تحميل البيانات
     inputState.add(
       LoadingState(stateRendererType: StateRendererType.fullScreenLoadingState),
     );
-
-    // تنفيذ الـ UseCase للحصول على البيانات
     (await storeDetailsUseCase.execute(Void)).fold(
-          (failure) {
-        // في حالة الفشل، عرض حالة الخطأ
+      (failure) {
         inputState.add(
           ErrorState(StateRendererType.fullScreenErrorState, failure.message),
         );
       },
-          (storeDetails) {
-        // في حالة النجاح، عرض حالة المحتوى
+      (storeDetails) async {
         inputState.add(ContentState());
-
-        // تحقق من أن الـ StreamController غير مغلق قبل إضافة البيانات
-        if (!_storeDetailsStreamController.isClosed) {
-          inputStoreDetails.add(storeDetails);
-        } else {
-          print("StreamController is already closed. Cannot add new events.");
-        }
+        inputStoreDetails.add(storeDetails);
       },
     );
   }
 
   @override
   void dispose() {
-    // إغلاق الـ StreamController عند الانتهاء
     _storeDetailsStreamController.close();
     super.dispose();
   }
 
-  // Input
   @override
   Sink get inputStoreDetails => _storeDetailsStreamController.sink;
 
-  // Output
+  //output
   @override
   Stream<StoreDetails> get outputStoreDetails =>
       _storeDetailsStreamController.stream.map((stores) => stores);

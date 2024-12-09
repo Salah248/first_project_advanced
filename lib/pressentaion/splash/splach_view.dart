@@ -41,7 +41,7 @@ class _SplachViewState extends State<SplachView> {
               }
             else
               {
-                _appPreferences.isOnBoardingScreenViewd().then(
+                _appPreferences.isOnBoardingScreenViewed().then(
                       (isOnBoardingScreenViewd) => {
                         if (isOnBoardingScreenViewd)
                           {

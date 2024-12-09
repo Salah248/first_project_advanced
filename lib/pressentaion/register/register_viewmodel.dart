@@ -1,9 +1,8 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
 import 'dart:io';
 
-import 'package:first_project_advanced/app/functions.dart';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/domain/usecase/register_usecase.dart';
 import 'package:first_project_advanced/pressentaion/base/base_view_model.dart';
 import 'package:first_project_advanced/pressentaion/common/freezed_data_classes.dart';
@@ -11,15 +10,15 @@ import 'package:first_project_advanced/pressentaion/common/state_renderer/state_
 import 'package:first_project_advanced/pressentaion/common/state_renderer/state_renderer.dart';
 import 'package:first_project_advanced/pressentaion/resources/strings_manager.dart';
 
+import '../../../app/functions.dart';
+
 class RegisterViewModel extends BaseViewModel
-    with RegisterViewModelInput, RegisterViewModelIOutput {
-  final StreamController userNamerStreamController =
+    with RegisterViewModelInput, RegisterViewModelOutput {
+  StreamController userNameStreamController =
       StreamController<String>.broadcast();
-
- StreamController mobileNumberStreamController =
+  StreamController mobileNumberStreamController =
       StreamController<String>.broadcast();
-
-    StreamController emailStreamController = StreamController<String>.broadcast();
+  StreamController emailStreamController = StreamController<String>.broadcast();
   StreamController passwordStreamController =
       StreamController<String>.broadcast();
   StreamController profilePictureStreamController =
@@ -27,75 +26,86 @@ class RegisterViewModel extends BaseViewModel
   StreamController areAllInputsValidStreamController =
       StreamController<void>.broadcast();
 
-      final StreamController isUserRegisterSuccessfullyStreamController =
-      StreamController<bool>();
+  StreamController isUserRegisteredInSuccessfullyStreamController =
+  StreamController<bool>();
+  final RegisterUseCase _registerUseCase;
+  var registerObject = RegisterObject("", "", "", "", "", "");
 
-  final RegisterUseCase _registerUsecase;
+  RegisterViewModel(this._registerUseCase);
 
-  RegisterViewModel(this._registerUsecase);
-
-  var registerObject = RegisterObject('', '', '', '', '', '');
-
-  // --- input
-
+  // inputs
   @override
   void start() {
-    // view model should tell view please show content state
     inputState.add(ContentState());
   }
 
   @override
   void dispose() {
-     userNamerStreamController.close();
+    userNameStreamController.close();
     mobileNumberStreamController.close();
     emailStreamController.close();
     passwordStreamController.close();
     profilePictureStreamController.close();
     areAllInputsValidStreamController.close();
-    isUserRegisterSuccessfullyStreamController.close();
+    isUserRegisteredInSuccessfullyStreamController.close();
     super.dispose();
   }
 
   @override
+  Sink get inputEmail => emailStreamController.sink;
+
+  @override
+  Sink get inputMobileNumber => mobileNumberStreamController.sink;
+
+  @override
+  Sink get inputPassword => passwordStreamController.sink;
+
+  @override
+  Sink get inputProfilePicture => profilePictureStreamController.sink;
+
+  @override
+  Sink get inputUserName => userNameStreamController.sink;
+
+  @override
+  Sink get inputAllInputsValid => areAllInputsValidStreamController.sink;
+
+  @override
   register() async {
     inputState.add(
-      LoadingState(
-        stateRendererType: StateRendererType.popupLoadingState,
-      ),
-    );
-    (await _registerUsecase.execute(
-      RegisterUseCaseInput(
-        registerObject.userName,
+        LoadingState(stateRendererType: StateRendererType.popupLoadingState));
+
+    (await _registerUseCase.execute(RegisterUseCaseInput(
+            registerObject.userName,
             registerObject.countryMobileCode,
             registerObject.mobileNumber,
             registerObject.email,
             registerObject.password,
-            registerObject.profilePicture
-
-      ),
-    ))
+            registerObject.profilePicture)))
         .fold(
-      (failure) => {
-        // left => failure
-        inputState.add(
-          ErrorState(
-            StateRendererType.popupErrorState,
-            failure.message,
-          ),
-        ),
-        print(failure.message)
-      },
-      (data) {
-        // raight => data (success)
-        print(data.customer?.name);
+            (failure) => {
+                  // left -> failure
+                  inputState.add(ErrorState(
+                      StateRendererType.popupErrorState, failure.message))
+                }, (data) {
+      // right -> data (success)
+      // content
+      inputState.add(ContentState());
+      // navigate to main screen
+       isUserRegisteredInSuccessfullyStreamController.add(true);
+    });
+  }
 
-        // content
-        inputState.add(ContentState());
-
-        // navigate to main screen
-          isUserRegisterSuccessfullyStreamController.add(true);
-      },
-    );
+  @override
+  setUserName(String userName) {
+    inputUserName.add(userName);
+    if (_isUserNameValid(userName)) {
+      //  update register view object
+      registerObject = registerObject.copyWith(userName: userName);
+    } else {
+      // reset username value in register view object
+      registerObject = registerObject.copyWith(userName: "");
+    }
+    validate();
   }
 
   @override
@@ -152,7 +162,6 @@ class RegisterViewModel extends BaseViewModel
   @override
   setProfilePicture(File profilePicture) {
     inputProfilePicture.add(profilePicture);
-    inputProfilePicture.add(profilePicture);
     if (profilePicture.path.isNotEmpty) {
       //  update register view object
       registerObject =
@@ -164,109 +173,49 @@ class RegisterViewModel extends BaseViewModel
     validate();
   }
 
-  @override
-  setUserName(String userName) {
-    inputUserName.add(userName);
-    if (_isUserNameValid(userName)) {
-      // update register object
-      registerObject = registerObject.copyWith(userName: userName);
-    } else {
-      // reset user name value in register object
-      registerObject = registerObject.copyWith(userName: "");
-    }
-    validate();
-  }
+  // -- outputs
 
   @override
-  // implement inputAllInputsValid
-  Sink get inputAllInputsValid => areAllInputsValidStreamController.sink;
+  Stream<bool> get outputIsUserNameValid => userNameStreamController.stream
+      .map((userName) => _isUserNameValid(userName));
 
   @override
-  // implement inputEmail
-  Sink get inputEmail => emailStreamController.sink;
+  Stream<String?> get outputErrorUserName => outputIsUserNameValid
+      .map((isUserName) => isUserName ? null : AppStrings.userNameInvalid.tr());
 
   @override
-  //  implement inputMobileNumber
-  Sink get inputMobileNumber => mobileNumberStreamController.sink;
+  Stream<bool> get outputIsEmailValid =>
+      emailStreamController.stream.map((email) => isEmailValid(email));
 
   @override
-  //  implement inputPassword
-  Sink get inputPassword => passwordStreamController.sink;
+  Stream<String?> get outputErrorEmail => outputIsEmailValid
+      .map((isEmailValid) => isEmailValid ? null : AppStrings.invalidEmail.tr());
 
   @override
-  //  implement inputProfilePicture
-  Sink get inputProfilePicture => profilePictureStreamController.sink;
-
-  @override
-  //
-  Sink get inputUserName => userNamerStreamController.sink;
-
-  // --- output
-
-  @override
-  // implement outputAreAllInputsValid
-  Stream<bool> get outputAreAllInputsValid =>
-      areAllInputsValidStreamController.stream.map(
-        (_) => _areAllInputsValid(),
-      );
-
-  @override
-  // implement outputErrorEmail
-  Stream<String?> get outputErrorEmail => outputIsEmailValid.map(
-        (isEmail) => isEmail ? null : AppStrings.invalidEmail,
-      );
-
-  @override
-  // implement outputErrorMobileNumber
-  Stream<String?> get outputErrorMobileNumber => outputIsMobileNumberValid.map(
-        (isMobileNumber) =>
-            isMobileNumber ? null : AppStrings.mobileNumberInvalid,
-      );
-
-  @override
-  //  implement outputErrorPassword
-  Stream<String?> get outputErrorPassword => outputIsPasswordValid.map(
-        (isPassword) => isPassword ? null : AppStrings.passwordInvalid,
-      );
-
-  @override
-  //  implement outputErrorUserName
-  Stream<String?> get outputErrorUserName => outputIsUserNameValid.map(
-        (isUserName) => isUserName ? null : AppStrings.userNameInvalid,
-      );
-
-  @override
-  //  implement outputIsEmailValid
-  Stream<bool> get outputIsEmailValid => emailStreamController.stream.map(
-        (email) => isEmailValid(email),
-      );
-
-  @override
-  // implement outputIsMobileNumberValid
   Stream<bool> get outputIsMobileNumberValid =>
-      mobileNumberStreamController.stream.map(
-        (mobileNumber) => _isMobileNumberValid(mobileNumber),
-      );
+      mobileNumberStreamController.stream
+          .map((mobileNumber) => _isMobileNumberValid(mobileNumber));
 
   @override
-  // implement outputIsPasswordValid
-  Stream<bool> get outputIsPasswordValid => passwordStreamController.stream.map(
-        (password) => _isPasswordValid(password),
-      );
+  Stream<String?> get outputErrorMobileNumber =>
+      outputIsMobileNumberValid.map((isMobileNumberValid) =>
+          isMobileNumberValid ? null : AppStrings.mobileNumberInvalid.tr());
 
   @override
-  // implement outputIsUserNameValid
-  Stream<bool> get outputIsUserNameValid =>
-      userNamerStreamController.stream.map(
-        (userName) => _isUserNameValid(userName),
-      );
+  Stream<bool> get outputIsPasswordValid => passwordStreamController.stream
+      .map((password) => _isPasswordValid(password));
 
   @override
-  // implement outputProfilePicture
+  Stream<String?> get outputErrorPassword => outputIsPasswordValid.map(
+      (isPasswordValid) => isPasswordValid ? null : AppStrings.passwordInvalid.tr());
+
+  @override
   Stream<File> get outputProfilePicture =>
-      profilePictureStreamController.stream.map(
-        (file) => file,
-      );
+      profilePictureStreamController.stream.map((file) => file);
+
+  @override
+  Stream<bool> get outputAreAllInputsValid =>
+      areAllInputsValidStreamController.stream.map((_) => _areAllInputsValid());
 
   // --  private functions
 
@@ -324,7 +273,7 @@ mixin RegisterViewModelInput {
   setProfilePicture(File profilePicture);
 }
 
-mixin RegisterViewModelIOutput {
+mixin RegisterViewModelOutput {
   Stream<bool> get outputIsUserNameValid;
 
   Stream<String?> get outputErrorUserName;

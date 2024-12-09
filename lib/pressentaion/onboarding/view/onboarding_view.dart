@@ -1,5 +1,6 @@
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/app/app_prefs.dart';
-import 'package:first_project_advanced/app/di.dart';
 import 'package:first_project_advanced/domain/models/models.dart';
 import 'package:first_project_advanced/pressentaion/onboarding/viewmodel/onboarding_view_model.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
@@ -12,22 +13,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../app/di.dart';
 import '../../resources/constants_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
 
   @override
-  State<OnBoardingView> createState() => _OnBoardingViewState();
+  OnBoardingViewState createState() => OnBoardingViewState();
 }
 
-class _OnBoardingViewState extends State<OnBoardingView> {
+class OnBoardingViewState extends State<OnBoardingView> {
   final PageController _pageController = PageController();
   final OnBoardingViewModel _viewModel = OnBoardingViewModel();
   final AppPreferences _appPreferences = instance<AppPreferences>();
 
   _bind() {
-    _appPreferences.setOnBoardingScreenViewd();
+    _appPreferences.setOnBoardingScreenViewed();
     _viewModel.start();
   }
 
@@ -40,11 +42,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<SliderViewObject>(
-      stream: _viewModel.outputSliderViewObject,
-      builder: (context, snapshot) {
-        return _getContentWidget(snapshot.data);
-      },
-    );
+        stream: _viewModel.outputSliderViewObject,
+        builder: (context, snapshot) {
+          return _getContentWidget(snapshot.data);
+        });
   }
 
   Widget _getContentWidget(SliderViewObject? sliderViewObject) {
@@ -84,7 +85,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     AppStrings.skip,
                     style: Theme.of(context).textTheme.titleMedium,
                     textAlign: TextAlign.end,
-                  ),
+                  ).tr(),
                 ),
               ),
 
@@ -110,7 +111,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: SizedBox(
                 width: AppSize.s20,
                 height: AppSize.s20,
-                child: SvgPicture.asset(ImageAssets.leftArrow),
+                child: SvgPicture.asset(ImageAssets.leftArrowIc),
               ),
               onTap: () {
                 // go to previous slide
@@ -141,14 +142,13 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 child: SizedBox(
                   width: AppSize.s20,
                   height: AppSize.s20,
-                  child: SvgPicture.asset(ImageAssets.rightArrow),
+                  child: SvgPicture.asset(ImageAssets.rightArrowIc),
                 ),
                 onTap: () {
                   // go to previous slide
                   _pageController.animateToPage(_viewModel.goNext(),
                       duration: const Duration(
-                        milliseconds: AppConstants.sliderAnimationTime,
-                      ),
+                          milliseconds: AppConstants.sliderAnimationTime),
                       curve: Curves.bounceInOut);
                 }),
           )
@@ -159,9 +159,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   Widget _getProperCircle(int index, int currentIndex) {
     if (index == currentIndex) {
-      return SvgPicture.asset(ImageAssets.hollowCirlce);
+      return SvgPicture.asset(ImageAssets.hollowCircleIc);
     } else {
-      return SvgPicture.asset(ImageAssets.solidCircle);
+      return SvgPicture.asset(ImageAssets.solidCircleIc);
     }
   }
 
