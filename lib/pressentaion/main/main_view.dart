@@ -1,3 +1,4 @@
+
 import 'package:first_project_advanced/pressentaion/main/pages/home/view/home_page.dart';
 import 'package:first_project_advanced/pressentaion/main/pages/notifcation/notifcation_page.dart';
 import 'package:first_project_advanced/pressentaion/main/pages/search/search_page.dart';
@@ -11,15 +12,15 @@ class MainView extends StatefulWidget {
   const MainView({super.key});
 
   @override
-  State<MainView> createState() => _MainViewState();
+  MainViewState createState() => MainViewState();
 }
 
-class _MainViewState extends State<MainView> {
-  List<Widget> pages = const [
-    HomePage(),
-    SearchPage(),
-    NotificationsPage(),
-    SettingsPage()
+class MainViewState extends State<MainView> {
+  List<Widget> pages = [
+    const HomePage(),
+    const SearchPage(),
+    const NotificationsPage(),
+    const SettingsPage()
   ];
   List<String> titles = [
     AppStrings.home,
@@ -65,7 +66,7 @@ class _MainViewState extends State<MainView> {
 
   onTap(int index) {
     setState(() {
-      _currentIndex =index ;
+      _currentIndex = index;
       _title = titles[index];
     });
   }

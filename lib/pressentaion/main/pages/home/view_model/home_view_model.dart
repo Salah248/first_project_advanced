@@ -2,94 +2,70 @@
 
 import 'dart:async';
 import 'dart:ffi';
-import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
-import 'package:first_project_advanced/pressentaion/common/state_renderer/state_renderer.dart';
-import 'package:rxdart/rxdart.dart';
+
 import 'package:first_project_advanced/domain/models/models.dart';
 import 'package:first_project_advanced/domain/usecase/home_usecase.dart';
 import 'package:first_project_advanced/pressentaion/base/base_view_model.dart';
+import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
+import 'package:rxdart/rxdart.dart';
 
-class HomeViewModel extends BaseViewModel with HomeViewModelInput,HomeViewModelOutput   {
+import '../../../../common/state_renderer/state_renderer.dart';
 
+class HomeViewModel extends BaseViewModel
+    with HomeViewModelInput, HomeViewModelOutput {
+  final _dataStreamController = BehaviorSubject<HomeViewObject>();
 
-   final StreamController _homeViewObjectStreamController = BehaviorSubject<HomeViewObject>();
-     
+  final HomeUseCase _homeUseCase;
 
-  final HomeUseCase _homeUsecase;
+  HomeViewModel(this._homeUseCase);
 
-  HomeViewModel(this._homeUsecase);
-
-
- // -- inputs
-
+  // --  inputs
   @override
   void start() {
     _getHomeData();
   }
 
+  _getHomeData() async {
+    inputState.add(
+      LoadingState(stateRendererType: StateRendererType.fullScreenLoadingState),
+    );
+    (await _homeUseCase.execute(Void)).fold(
+        (failure) => {
+              // left -> failure
+              inputState.add(
+                ErrorState(
+                    StateRendererType.fullScreenErrorState, failure.message),
+              )
+            }, (homeObject) {
+      // right -> data (success)
+      // content
+      inputState.add(ContentState());
+      inputHomeData.add(HomeViewObject(homeObject.data.stores,
+          homeObject.data.services, homeObject.data.banners));
+      // navigate to main screen
+    });
+  }
+
   @override
   void dispose() {
-    _homeViewObjectStreamController.close();
+    _dataStreamController.close();
     super.dispose();
   }
 
-  _getHomeData() async {
-    inputState.add(
-      LoadingState(
-        stateRendererType: StateRendererType.fullScreenLoadingState,
-      ),
-    );
-    (await _homeUsecase.execute(Void))
-        .fold(
-      (failure) => {
-        // left => failure
-        inputState.add(
-          ErrorState(
-            StateRendererType.fullScreenErrorState,
-            failure.message,
-          ),
-        ),
-        // ignore: avoid_print
-        print(failure.message)
-      },
-      (homeObject) {
-        // raight => data (success)
-
-
-
-        // content
-        inputState.add(ContentState());
-
-       inputHomeData.add(HomeViewObject(homeObject.data.stores,
-          homeObject.data.services, homeObject.data.banners));
-
-      },
-    );
-  }
-  
-
-
-    @override
-  Sink get inputHomeData => _homeViewObjectStreamController.sink;
-  
-  // --- outputs
-
-
-  
   @override
-  Stream<HomeViewObject> get outputHomeData => _homeViewObjectStreamController.stream.map((data) =>data ,);
+  Sink get inputHomeData => _dataStreamController.sink;
+
+  // -- outputs
+  @override
+  Stream<HomeViewObject> get outputHomeData =>
+      _dataStreamController.stream.map((data) => data);
 }
 
-
-mixin HomeViewModelInput{
-Sink get inputHomeData;
-
-
+mixin HomeViewModelInput {
+  Sink get inputHomeData;
 }
 
-
-mixin HomeViewModelOutput{
-  
+mixin HomeViewModelOutput {
   Stream<HomeViewObject> get outputHomeData;
 }
 

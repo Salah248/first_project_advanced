@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:first_project_advanced/data/response/responses.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../../app/constants.dart';
+import '../response/responses.dart';
 
 part 'app_api.g.dart';
 
@@ -28,4 +28,7 @@ abstract class AppServiceClient {
 
   @GET("/home")
   Future<HomeResponse> getHomeData();
+
+  @GET("/storeDetials/1")
+  Future<StoreDetailsResponse> getStoreDetails();
 }

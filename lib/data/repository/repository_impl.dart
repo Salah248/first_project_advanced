@@ -1,22 +1,24 @@
+
+
 import 'package:dartz/dartz.dart';
-import 'package:first_project_advanced/data/data_source/local_data_source.dart';
-import 'package:first_project_advanced/data/data_source/remote_data_source.dart';
 import 'package:first_project_advanced/data/mapper/mapper.dart';
-import 'package:first_project_advanced/data/network/error_handler.dart';
-import 'package:first_project_advanced/data/network/failure.dart';
-import 'package:first_project_advanced/data/network/network_info.dart';
-import 'package:first_project_advanced/data/network/requests.dart';
 import 'package:first_project_advanced/domain/models/models.dart';
 
 import '../../domain/repository/repository.dart';
+import '../data_source/local_data_source.dart';
+import '../data_source/remote_data_source.dart';
+import '../network/error_handler.dart';
+import '../network/failure.dart';
+import '../network/network_info.dart';
+import '../network/requests.dart';
 
 class RepositoryImpl implements Repository {
   final RemoteDataSource _remoteDataSource;
   final LocalDataSource _localDataSource;
   final NetworkInfo _networkInfo;
 
-  RepositoryImpl(
-      this._remoteDataSource, this._networkInfo, this._localDataSource);
+  RepositoryImpl(this._remoteDataSource, this._networkInfo,
+      this._localDataSource);
 
   @override
   Future<Either<Failure, Authentication>> login(
@@ -38,7 +40,9 @@ class RepositoryImpl implements Repository {
               response.message ?? ResponseMessage.DEFAULT));
         }
       } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
+        return Left(ErrorHandler
+            .handle(error)
+            .failure);
       }
     } else {
       // return internet connection error
@@ -65,7 +69,9 @@ class RepositoryImpl implements Repository {
               response.message ?? ResponseMessage.DEFAULT));
         }
       } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
+        return Left(ErrorHandler
+            .handle(error)
+            .failure);
       }
     } else {
       // return network connection error
@@ -86,7 +92,6 @@ class RepositoryImpl implements Repository {
           // success
           // return either right
           // return data
-          // Save home response to cache
           return Right(response.toDomain());
         } else {
           // failure --return business error
@@ -95,7 +100,9 @@ class RepositoryImpl implements Repository {
               response.message ?? ResponseMessage.DEFAULT));
         }
       } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
+        return Left(ErrorHandler
+            .handle(error)
+            .failure);
       }
     } else {
       // return internet connection error
@@ -110,13 +117,10 @@ class RepositoryImpl implements Repository {
       // get response from cache
       final response = await _localDataSource.getHomeData();
       return Right(response.toDomain());
-
-    
     } catch (cacheError) {
-      // cache is not existing  or cache is not valid
+      // cache is not existing or cache is not valid
 
-      // its time to get from api side
-
+      // its the time to get from API side
       if (await _networkInfo.isConnected) {
         // its connected to internet, its safe to call API
         try {
@@ -126,25 +130,53 @@ class RepositoryImpl implements Repository {
             // success
             // return either right
             // return data
+            // save home response to cache
+
             // save response in cache (local data source)
-            _localDataSource.saveHomeToCach(response);
+            _localDataSource.saveHomeToCache(response);
+
             return Right(response.toDomain());
           } else {
             // failure --return business error
             // return either left
-            return Left(
-              Failure(
-                ApiInternalStatus.FAILURE,
-                response.message ?? ResponseMessage.DEFAULT,
-              ),
-            );
+            return Left(Failure(ApiInternalStatus.FAILURE,
+                response.message ?? ResponseMessage.DEFAULT));
+          }
+        } catch (error) {
+          return Left(ErrorHandler
+              .handle(error)
+              .failure);
+        }
+      } else {
+        // return internet connection error
+        // return either left
+        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, StoreDetails>> getStoreDetails() async {
+    try {
+      // get data from cache
+
+      final response = await _localDataSource.getStoreDetails();
+      return Right(response.toDomain());
+    } catch (cacheError) {
+      if (await _networkInfo.isConnected) {
+        try {
+          final response = await _remoteDataSource.getStoreDetails();
+          if (response.status == ApiInternalStatus.SUCCESS) {
+            _localDataSource.saveStoreDetailsToCache(response);
+            return Right(response.toDomain());
+          } else {
+            return Left(Failure(response.status ?? ResponseCode.DEFAULT,
+                response.message ?? ResponseMessage.DEFAULT));
           }
         } catch (error) {
           return Left(ErrorHandler.handle(error).failure);
         }
       } else {
-        // return internet connection error
-        // return either left
         return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
     }

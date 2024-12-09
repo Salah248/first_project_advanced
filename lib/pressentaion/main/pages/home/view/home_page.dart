@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-   Widget _getContentWidget() {
+  Widget _getContentWidget() {
     return StreamBuilder<HomeViewObject>(
         stream: _viewModel.outputHomeData,
         builder: (context, snapshot) {
@@ -63,10 +63,8 @@ class HomePageState extends State<HomePage> {
             ],
           );
           
-        }
-        );
+        });
   }
-  
 
   Widget _getBannerWidget(List<BannerAd>? banners) {
     if (banners != null) {
@@ -110,8 +108,6 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  
 
   Widget _getServicesWidget(List<Service>? services) {
     if (services != null) {
@@ -163,8 +159,6 @@ class HomePageState extends State<HomePage> {
       return Container();
     }
   }
-
-
 
   Widget _getStoresWidget(List<Store>? stores) {
     if (stores != null) {

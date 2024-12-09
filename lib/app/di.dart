@@ -1,24 +1,28 @@
+
 import 'package:dio/dio.dart';
 import 'package:first_project_advanced/app/app_prefs.dart';
 import 'package:first_project_advanced/data/data_source/local_data_source.dart';
 import 'package:first_project_advanced/data/data_source/remote_data_source.dart';
 import 'package:first_project_advanced/data/network/app_api.dart';
 import 'package:first_project_advanced/data/network/dio_factory.dart';
-import 'package:first_project_advanced/data/network/network_info.dart';
 import 'package:first_project_advanced/data/repository/repository_impl.dart';
 import 'package:first_project_advanced/domain/repository/repository.dart';
 import 'package:first_project_advanced/domain/usecase/forgot_password_use_case.dart';
 import 'package:first_project_advanced/domain/usecase/home_usecase.dart';
 import 'package:first_project_advanced/domain/usecase/login_use_case.dart';
 import 'package:first_project_advanced/domain/usecase/register_usecase.dart';
+import 'package:first_project_advanced/domain/usecase/stores_datails_usecase.dart';
 import 'package:first_project_advanced/pressentaion/forgot_password/forgot_password_viewmodel.dart';
 import 'package:first_project_advanced/pressentaion/login/viewmodel/login_view_model.dart';
 import 'package:first_project_advanced/pressentaion/main/pages/home/view_model/home_view_model.dart';
 import 'package:first_project_advanced/pressentaion/register/register_viewmodel.dart';
+import 'package:first_project_advanced/pressentaion/store_details/store_details_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../data/network/network_info.dart';
 
 
 final instance = GetIt.instance;
@@ -50,9 +54,8 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<RemoteDataSource>(
       () => RemoteDataSourceImpl(instance<AppServiceClient>()));
 
-// local data source
-  instance.registerLazySingleton<LocalDataSource>(
-      () => LocalDataSourceImpl());
+  // local data source
+  instance.registerLazySingleton<LocalDataSource>(() => LocalDataSourceImpl());
 
   // repository
 
@@ -90,5 +93,14 @@ initHomeModule() {
   if (!GetIt.I.isRegistered<HomeUseCase>()) {
     instance.registerFactory<HomeUseCase>(() => HomeUseCase(instance()));
     instance.registerFactory<HomeViewModel>(() => HomeViewModel(instance()));
+  }
+}
+
+initStoreDetailsModule() {
+  if (!GetIt.I.isRegistered<StoreDetailsUseCase>()) {
+    instance.registerFactory<StoreDetailsUseCase>(
+        () => StoreDetailsUseCase(instance()));
+    instance.registerFactory<StoreDetailsViewModel>(
+        () => StoreDetailsViewModel(instance()));
   }
 }
