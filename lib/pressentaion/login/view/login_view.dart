@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/app/app_prefs.dart';
 import 'package:first_project_advanced/app/di.dart';
 import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
@@ -39,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
       (isLoggedIn) {
         if (isLoggedIn) {
           // navigate to main screen
-          SchedulerBinding.instance?.addPostFrameCallback(
+          SchedulerBinding.instance.addPostFrameCallback(
             (_) {
               _appPreferences.setUserLoggedIn();
               Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
@@ -104,11 +105,11 @@ class _LoginViewState extends State<LoginView> {
                       keyboardType: TextInputType.emailAddress,
                       controller: _userNameController,
                       decoration: InputDecoration(
-                        hintText: AppStrings.username,
-                        labelText: AppStrings.username,
+                        hintText: AppStrings.username.tr(),
+                        labelText: AppStrings.username.tr(),
                         errorText: (snapshot.data ?? true)
                             ? null
-                            : AppStrings.usernameError,
+                            : AppStrings.usernameError.tr(),
                       ),
                     );
                   },
@@ -133,11 +134,11 @@ class _LoginViewState extends State<LoginView> {
                       keyboardType: TextInputType.visiblePassword,
                       controller: _passwordController,
                       decoration: InputDecoration(
-                        hintText: AppStrings.password,
-                        labelText: AppStrings.password,
+                        hintText: AppStrings.password.tr(),
+                        labelText: AppStrings.password.tr(),
                         errorText: (snapshot.data ?? true)
                             ? null
-                            : AppStrings.passwordError,
+                            : AppStrings.passwordError.tr(),
                       ),
                     );
                   },
@@ -164,7 +165,7 @@ class _LoginViewState extends State<LoginView> {
                               }
                             : null,
                         child: Text(
-                          AppStrings.login,
+                          AppStrings.login.tr(),
                           style: TextStyle(
                             color: ColorManager.white,
                           ),
@@ -189,7 +190,7 @@ class _LoginViewState extends State<LoginView> {
                             context, Routes.forgotPasswordRoute);
                       },
                       child: Text(
-                        AppStrings.forgetPassword,
+                        AppStrings.forgetPassword.tr(),
                         style: Theme.of(context).textTheme.titleMedium,
                         textAlign: TextAlign.end,
                       ),
@@ -199,7 +200,7 @@ class _LoginViewState extends State<LoginView> {
                         Navigator.pushNamed(context, Routes.registerRoute);
                       },
                       child: Text(
-                        AppStrings.registerText,
+                        AppStrings.registerText.tr(),
                         style: Theme.of(context).textTheme.titleMedium,
                         textAlign: TextAlign.end,
                       ),

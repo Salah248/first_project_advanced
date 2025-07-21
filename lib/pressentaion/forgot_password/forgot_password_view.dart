@@ -1,20 +1,22 @@
-import 'package:first_project_advanced/app/di.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/pressentaion/common/state_renderer/state_rendere_impl.dart';
-import 'package:first_project_advanced/pressentaion/forgot_password/forgot_password_viewmodel.dart';
-import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
-import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';
-import 'package:first_project_advanced/pressentaion/resources/strings_manager.dart';
-import 'package:first_project_advanced/pressentaion/resources/values_manager.dart';
 import 'package:flutter/material.dart';
+
+import '../../app/di.dart';
+import '../resources/assets_manager.dart';
+import '../resources/color_manager.dart';
+import '../resources/strings_manager.dart';
+import '../resources/values_manager.dart';
+import 'forgot_password_viewmodel.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
 
   @override
-  State<ForgotPasswordView> createState() => _ForgotPasswordViewState();
+  ForgotPasswordViewState createState() => ForgotPasswordViewState();
 }
 
-class _ForgotPasswordViewState extends State<ForgotPasswordView> {
+class ForgotPasswordViewState extends State<ForgotPasswordView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailTextEditingController =
       TextEditingController();
@@ -71,18 +73,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   stream: _viewModel.outputIsEmailValid,
                   builder: (context, snapshot) {
                     return TextFormField(
-                      style: TextStyle(
-                        color: ColorManager.primary,
-                        fontSize: AppSize.s14,
-                      ),
                       keyboardType: TextInputType.emailAddress,
                       controller: _emailTextEditingController,
                       decoration: InputDecoration(
-                          hintText: AppStrings.emailHint,
-                          labelText: AppStrings.emailHint,
+                          hintText: AppStrings.emailHint.tr(),
+                          labelText: AppStrings.emailHint.tr(),
                           errorText: (snapshot.data ?? true)
                               ? null
-                              : AppStrings.invalidEmail),
+                              : AppStrings.invalidEmail.tr()),
                     );
                   },
                 ),
@@ -103,9 +101,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           onPressed: (snapshot.data ?? false)
                               ? () => _viewModel.forgotPassword()
                               : null,
-                          child:  Text(AppStrings.resetPassword,style: TextStyle(
-                        color: ColorManager.white,
-                      ),),),
+                          child: Text(AppStrings.resetPassword.tr())),
                     );
                   },
                 ),
