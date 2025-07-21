@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/pressentaion/resources/assets_manager.dart';
 import 'package:first_project_advanced/pressentaion/resources/color_manager.dart';
@@ -29,7 +28,8 @@ class StateRenderer extends StatelessWidget {
   final Function retryActionFunction;
 
   const StateRenderer(
-      {super.key, required this.stateRendererType,
+      {super.key,
+      required this.stateRendererType,
       this.message = AppStrings.loading,
       this.title = "",
       required this.retryActionFunction});
@@ -71,8 +71,6 @@ class StateRenderer extends StatelessWidget {
           _getMessage(message),
           _getRetryButton(AppStrings.ok.tr(), context)
         ]);
-      default:
-        return Container();
     }
   }
 

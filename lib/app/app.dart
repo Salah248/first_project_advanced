@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/app/app_prefs.dart';
 import 'package:first_project_advanced/app/di.dart';

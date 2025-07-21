@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:first_project_advanced/app/app_prefs.dart';
 import 'package:first_project_advanced/domain/models/models.dart';
